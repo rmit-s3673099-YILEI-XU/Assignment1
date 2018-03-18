@@ -55,8 +55,8 @@ public class MiniNet {
 	
 	private void addPerson()
 	{
-		Person pr;
-		String prName, prPic, prStatus;
+		Person pr,friend;
+		String prName, prPic, prStatus, frName;
 		int prAge;
 		
 		
@@ -73,7 +73,7 @@ public class MiniNet {
 		prStatus= sr.nextLine();
 		
 		
-		System.out.println(prName+" "+prAge+" "+ prPic+" "+prStatus+" ");
+		//System.out.println(prName+" "+prAge+" "+ prPic+" "+prStatus+" ");
 		if(prAge>=16)
 			pr = new Adult();
 		else if(prAge>2)
@@ -87,6 +87,31 @@ public class MiniNet {
 		
 		member.add(pr);
 		
+		System.out.println("Add person successful!");
+		if(pr instanceof Adult) {
+			
+		System.out.println("Do you want to add friend? Y/N");
+		//more details @Emma
+		if(sr.nextLine().contentEquals("y"))
+		{
+			System.out.println("Please input friend name: ");
+			frName = sr.nextLine();
+			for(int i =0; i<member.size();i++)
+			{
+				if(member.get(i).getName().equals(frName)) {
+					//friend = new Adult();
+					friend = member.get(i);
+					((Adult) pr).addFriends(friend);
+					//System.out.println("FFFFFFF"+friend.getName());
+					System.out.println("Add Friend successful!");
+					break;
+				}
+
+			}
+			
+		}
+		}
+		
 		
 	}
 	
@@ -96,7 +121,12 @@ public class MiniNet {
 		System.out.println("Name:"+p.getName());
 		System.out.println("Age:"+p.getAge());
 		System.out.println("Picture: "+p.getPic());
-		System.out.println("Stautus: "+p.getStatus()+"\n");
+		System.out.println("Stautus: "+p.getStatus());
+		if(p instanceof Adult)
+		{
+			((Adult) p).displayFriendsList();
+			System.out.println("");
+		}
 		
 	}
 	
@@ -105,7 +135,7 @@ public class MiniNet {
 		for(int i =0;i<member.size();i++)
 		{
 			if(member.get(i) instanceof Adult)
-				System.out.println(i+1+". "+member.get(i).getName() +" Audult");
+				System.out.println(i+1+". "+member.get(i).getName() +" Adult");
 			else if(member.get(i) instanceof Children)
 				System.out.println(i+1+". "+member.get(i).getName() +" Children");
 			else if(member.get(i) instanceof Baby)
@@ -131,6 +161,8 @@ public class MiniNet {
 	}
 	
 	public void runProfile() {
+		
+		testData();
 		while (!isExit) {
 			mainMenu();
 			switch (selectMenuNum) {
@@ -153,4 +185,20 @@ public class MiniNet {
 
 		System.out.println("good!");
 	}
+	
+	private void testData()
+	{
+		Person AA = new Adult("AA",20,"Y","PP");
+		Person BB = new Adult("BB",28,"N","OO");
+		Person CC = new Adult("CC",18,"Y","XX");
+		Person DD = new Adult("DD",30,"Y","TT");
+		((Adult)AA).addFriends(BB);
+		((Adult)AA).addFriends(DD);
+		((Adult)CC).addFriends(DD);
+		member.add(AA);
+		member.add(BB);
+		member.add(CC);
+		member.add(DD);
+	}
+
 }

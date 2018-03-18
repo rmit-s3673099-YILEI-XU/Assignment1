@@ -11,17 +11,17 @@ import java.util.ArrayList;
  */
 public class Children extends Person{
 	private ArrayList friends = new ArrayList();
-	private String parents[]= new String[2];
+	private Person parents[]= new Person[2];
 	/**
 	 * @return the parents
 	 */
-	public String[] getParents() {
+	public Person[] getParents() {
 		return parents;
 	}
 	/**
 	 * @param parents the parents to set
 	 */
-	public void setParents(String[] parents) {
+	public void setParents(Person[] parents) {
 		this.parents = parents;
 	}
 }

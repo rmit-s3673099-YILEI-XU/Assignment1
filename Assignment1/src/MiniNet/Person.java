@@ -13,6 +13,21 @@ public abstract class Person {
 	private int age;
 	private String pic;
 	private String status;
+	
+	/**
+	 * @param name
+	 * @param age
+	 * @param pic
+	 * @param status
+	 */
+	public Person(String name, int age, String pic, String status) {
+		this.name = name;
+		this.age = age;
+		this.pic = pic;
+		this.status = status;
+	}
+	
+	public Person() {};
 	/**
 	 * @return the name
 	 */
