@@ -91,7 +91,7 @@ public class Adult extends Person implements AddFriends{
 	public void displayChildrenList()
 	{
 		System.out.print("Children: ");
-		for(int i = 0; i<friendList.size();i++)
+		for(int i = 0; i<childrenList.size();i++)
 		{
 			System.out.print(childrenList.get(i).getName()+" ");
 		}
