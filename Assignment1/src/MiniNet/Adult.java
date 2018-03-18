@@ -10,7 +10,10 @@ import java.util.ArrayList;
  *
  */
 public class Adult extends Person implements AddFriends{
+	
 	private ArrayList<Person> friendList = new ArrayList(); 
+	private ArrayList<Person> childrenList = new ArrayList(); 
+	
 	private String[] parents = new String[2];
 	
 	public Adult()
@@ -24,9 +27,7 @@ public class Adult extends Person implements AddFriends{
 	
 	
 	public boolean addFriends(Person pr) {
-		
-		
-		
+				
 		//String[] prFriendList =((Adult)pr).returnFriendsList();
 		
 		friendList.add(pr);	
@@ -57,6 +58,9 @@ public class Adult extends Person implements AddFriends{
 		return true;
 		
 	}
+	
+
+	
 	public String[] returnFriendsList() {
 		
 		String showFriendList[]= new String[friendList.size()];
@@ -76,5 +80,20 @@ public class Adult extends Person implements AddFriends{
 			System.out.print(returnFriendsList()[i]+" ");
 		System.out.println("");
 			
+	}
+	
+	public boolean addChildren(Person pr)
+	{
+		childrenList.add(pr);
+		return true;
+	}
+	
+	public void displayChildrenList()
+	{
+		System.out.print("Children: ");
+		for(int i = 0; i<friendList.size();i++)
+		{
+			System.out.print(childrenList.get(i).getName()+" ");
+		}
 	}
 }

@@ -24,4 +24,9 @@ public class Children extends Person{
 	public void setParents(Person[] parents) {
 		this.parents = parents;
 	}
+	
+	public void displayParents()
+	{
+		System.out.println("Parents: "+getParents()[0].getName()+" "+getParents()[1].getName());
+	}
 }

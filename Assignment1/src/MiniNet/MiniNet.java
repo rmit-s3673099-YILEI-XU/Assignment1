@@ -58,6 +58,7 @@ public class MiniNet {
 		Person pr,friend;
 		String prName, prPic, prStatus, frName;
 		int prAge;
+		Adult parent;
 		
 		
 		//more details @Emma
@@ -88,30 +89,30 @@ public class MiniNet {
 		member.add(pr);
 		
 		System.out.println("Add person successful!");
-		if(pr instanceof Adult) {
-			
-		System.out.println("Do you want to add friend? Y/N");
-		//more details @Emma
-		if(sr.nextLine().contentEquals("y"))
-		{
-			System.out.println("Please input friend name: ");
-			frName = sr.nextLine();
-			for(int i =0; i<member.size();i++)
-			{
-				if(member.get(i).getName().equals(frName)) {
-					//friend = new Adult();
-					friend = member.get(i);
-					((Adult) pr).addFriends(friend);
-					//System.out.println("FFFFFFF"+friend.getName());
-					System.out.println("Add Friend successful!");
-					break;
-				}
-
-			}
-			
-		}
-		}
 		
+		if (pr instanceof Adult) {
+			
+			System.out.println("Do you want to add friend? Y/N");
+			// more details @Emma
+			if (sr.nextLine().contentEquals("y")) {
+				System.out.println("Please input friend name: ");
+				frName = sr.nextLine();
+				for (int i = 0; i < member.size(); i++) {
+					if (member.get(i).getName().equals(frName)) {
+						friend = member.get(i);
+						((Adult) pr).addFriends(friend);
+						System.out.println("Add Friend successful!");
+						break;
+					}
+
+				}
+			}
+		}
+		else if(pr instanceof Children)
+		{
+			addParents(pr);
+
+		}
 		
 	}
 	
@@ -125,7 +126,12 @@ public class MiniNet {
 		if(p instanceof Adult)
 		{
 			((Adult) p).displayFriendsList();
+			((Adult) p).displayChildrenList();
 			System.out.println("");
+		}
+		else if(p instanceof Children)
+		{
+			((Children)p).displayParents();
 		}
 		
 	}
@@ -158,6 +164,65 @@ public class MiniNet {
 			displayPersonDetail(member.get(selectPersonNum-1));
 		
 		
+	}
+	
+	
+	public void addParents(Person pr) {
+		Scanner sr = new Scanner(System.in);
+		String[] parentsName = new String[2];
+		Person[] parents = new Person[2];
+		boolean[] isSetParents = {false, false};
+		
+		System.out.println("Please input parents name: ");
+		parentsName[0]= sr.next();
+		parentsName[1]= sr.next();
+		while(parentsName[0].equals(parentsName[1]))
+		{
+			System.out.println("Same name! Please input again: ");
+			parentsName[0]= sr.next();
+			parentsName[1]= sr.next();
+		}
+		sr.nextLine();
+		
+		while (!isSetParents[0] || !isSetParents[1]) {
+			
+			for (int i = 0; i < member.size(); i++) {
+				if (member.get(i).getName().equals(parentsName[0]) && member.get(i) instanceof Adult) {
+					parents[0] = member.get(i);
+					((Adult)member.get(i)).addChildren(pr);
+					isSetParents[0] = true;
+					//break;
+				}
+				if (member.get(i).getName().equals(parentsName[1]) && member.get(i) instanceof Adult) {
+					parents[1] = member.get(i);
+					((Adult)member.get(i)).addChildren(pr);
+					isSetParents[1] = true;
+					//break;
+				}
+
+			}
+			if (!isSetParents[0]) {
+				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
+				parentsName[0] = sr.nextLine();
+				if(parentsName[0].equals(parentsName[1]))
+				{
+					System.out.println("Same name with another parents, please input again!");
+					parentsName[0] = sr.nextLine();
+				}
+			}
+			if (!isSetParents[1]) {
+				System.out.println(parentsName[1] + " is not in system list. Please check the name and input again.");
+				parentsName[1] = sr.nextLine();
+				if(parentsName[1].equals(parentsName[0]))
+				{
+					System.out.println("Same name with another parents, please input again!");
+					parentsName[1] = sr.nextLine();
+				}
+
+			}
+		}
+		((Children)pr).setParents(parents);
+		System.out.println("Add Parents successful!\n");
 	}
 	
 	public void runProfile() {
