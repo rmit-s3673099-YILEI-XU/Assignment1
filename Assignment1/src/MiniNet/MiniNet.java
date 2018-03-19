@@ -296,6 +296,8 @@ public class MiniNet {
 			System.out.println("The person is not in the list. Please input again. ");
 			perName=sr.nextLine();
 		}
+		
+		System.out.println("Select "+ getPerson(perName));
 			displayPersonDetail(getPerson(perName));		
 		
 	}
