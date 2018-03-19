@@ -9,31 +9,40 @@ package MiniNet;
  */
 public class Baby extends Person implements ParentsController{
 
-	private String parents[]= new String[2];
+	private Person parents[]= new Person[2];
 
 	/**
 	 * @return the parents
 	 */
-	public String[] getParents() {
+	public Person[] getParents() {
+		
 		return parents;
 	}
 
 	/**
 	 * @param parents the parents to set
 	 */
-	public void setParents(String[] parents) {
+	public void setParents(Person[] parents) {
+		
 		this.parents = parents;
 	}
 
 	@Override
-	void displayProfile() {
-		// TODO Auto-generated method stub
+	public void displayProfile() {
+		
+		System.out.println("\nPerson Profile\n"+"===================================");
+		System.out.println("Name: "+this.getName());
+		System.out.println("Age: "+this.getAge());
+		System.out.println("Picture: "+this.getPic());
+		System.out.println("Stautus: "+this.getStatus());
+		System.out.println("");
 		
 	}
 
 	@Override
 	public void displayParents() {
-		// TODO Auto-generated method stub
+		
+		System.out.println("Parents: " + getParents()[0].getName() + " " + getParents()[1].getName());
 		
 	}
 	
