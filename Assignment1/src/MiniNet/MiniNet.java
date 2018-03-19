@@ -94,6 +94,7 @@ public class MiniNet {
 		
 		if (pr instanceof Adult) {
 			
+			/*addFriends*/
 			System.out.println("Do you want to add friend? Y/N");
 			// more details @Emma
 			if (sr.nextLine().contentEquals("y")) {
@@ -109,10 +110,20 @@ public class MiniNet {
 
 				}
 			}
+			/*addParents*/
+			System.out.println("Do you want to add parents? Y/N");
+
+			if(sr.nextLine().contentEquals("Y")){
+
+				addParents(pr);
+
+
+			}
 		}
 		else if(pr instanceof Children)
 		{
 			addParents(pr);
+			/*addFriends*/
 			System.out.println("Do you want to add friends? Y/N");
 			if (sr.nextLine().contentEquals("Y")) {
 				System.out.println("Please input friend name: ");
@@ -204,21 +215,29 @@ public class MiniNet {
 		
 		while (!isSetParents[0] || !isSetParents[1]) {
 			
-			for (int i = 0; i < member.size(); i++) {
-				if (member.get(i).getName().equals(parentsName[0]) && member.get(i) instanceof Adult) {
-					parents[0] = member.get(i);
-					((Adult)member.get(i)).addChildren(pr);
-					isSetParents[0] = true;
-					//break;
+			
+				if(getPerson(parentsName[0]) instanceof Adult) {
+					
+					parents[0] = getPerson(parentsName[0]);
+					((Adult)getPerson(parentsName[0])).addChildren(pr);
+					((Adult)getPerson(parentsName[1])).addChildren(pr);
 				}
-				if (member.get(i).getName().equals(parentsName[1]) && member.get(i) instanceof Adult) {
-					parents[1] = member.get(i);
-					((Adult)member.get(i)).addChildren(pr);
-					isSetParents[1] = true;
-					//break;
-				}
-
-			}
+				
+				//for (int i = 0; i < member.size(); i++) {
+				//				if (member.get(i).getName().equals(parentsName[0]) && member.get(i) instanceof Adult) {
+//					parents[0] = member.get(i);
+//					((Adult)member.get(i)).addChildren(pr);
+//					isSetParents[0] = true;
+//					//break;
+//				}
+//				if (member.get(i).getName().equals(parentsName[1]) && member.get(i) instanceof Adult) {
+//					parents[1] = member.get(i);
+//					((Adult)member.get(i)).addChildren(pr);
+//					isSetParents[1] = true;
+//					//break;
+//				}
+//
+//			}
 		
 			if (!isSetParents[0]) {
 				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");

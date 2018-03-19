@@ -25,6 +25,7 @@ public class Baby extends Person implements ParentsController{
 	public void setParents(Person[] parents) {
 		
 		this.parents = parents;
+		
 	}
 
 	@Override

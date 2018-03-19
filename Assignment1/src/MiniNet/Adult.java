@@ -14,7 +14,7 @@ public class Adult extends Person implements FriendsController, ParentsControlle
 	private ArrayList<Person> friendList = new ArrayList(); 
 	private ArrayList<Person> childrenList = new ArrayList(); 
 	
-	//private String[] parents = new String[2];
+	private Person[] parents = new Person[2];
 	
 	public Adult()
 	{
@@ -90,11 +90,19 @@ public class Adult extends Person implements FriendsController, ParentsControlle
 		}
 		System.out.println("");
 	}
+	
+	
+	public void setParents(Person[] parents) {
+		this.parents = parents;
+	}
 
-	@Override
+	public Person[] getParents() {
+
+		return parents;
+	}
+
 	public void displayParents() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Parents: " + getParents()[0].getName() + " " + getParents()[1].getName());
 	}
 
 	
