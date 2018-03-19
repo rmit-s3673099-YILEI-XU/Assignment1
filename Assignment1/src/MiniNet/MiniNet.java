@@ -113,14 +113,26 @@ public class MiniNet {
 		else if(pr instanceof Children)
 		{
 			addParents(pr);
+			System.out.println("Do you want to add friends? Y/N");
+			if (sr.nextLine().contentEquals("Y")) {
+				System.out.println("Please input friend name: ");
+				frName = sr.nextLine();
+				for (int i = 0; i < member.size(); i++) {
+					if (member.get(i).getName().equals(frName)) {
+						friend = member.get(i);
+						((Children) pr).addFriends(friend);
+						System.out.println("Add Friend successful!");
 
-		}else if(pr instanceof Baby) {
-			
-			addParents(pr);
-			
+						break;
 		}
 		
 	}
+			}
+			}else/* it is Baby*/{
+				
+				addParents(pr);
+			}
+		}
 	
 /*	private void displayPersonDetail(Person p)
 	{

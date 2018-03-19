@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Children extends Person implements ParentsController{
-	private ArrayList friends = new ArrayList();
+	private ArrayList<Person> friends = new ArrayList();
 	private Person parents[]= new Person[2];
 	
 	/**
@@ -42,4 +42,29 @@ public class Children extends Person implements ParentsController{
 		displayParents();
 		
 	}
+	
+	public boolean addFriends(Person pr) {
+        int ageGap = Math.abs(this.getAge() - pr.getAge());
+        if (ageGap <= 3) {
+            friends.add(pr);
+            ((Children) pr).friends.add(this);
+            return true;
+        } else {
+            System.out.println("Gap is too big, they cannot be friends.");
+            return false;
+        }
+    }
+
+     public String[] returnFriendsList() {
+
+            String showFriendList[]= new String[friends.size()];
+            for(int i=0; i < friends.size();i++ )
+            {
+                showFriendList[i]=friends.get(i).getName();
+            }
+
+            return showFriendList;
+
+        }
+
 }
