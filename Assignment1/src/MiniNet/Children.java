@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Children extends Person{
 	private ArrayList friends = new ArrayList();
 	private Person parents[]= new Person[2];
+	
 	/**
 	 * @return the parents
 	 */

@@ -17,6 +17,7 @@ public class MiniNet {
 	private int selectMenuNum = 0;
 	private int selectPersonNum = 0;
 	private boolean isExit = false;
+	//private int memberNum=-1;
 	
 	private void mainMenu()
 	{
@@ -34,7 +35,6 @@ public class MiniNet {
 				"6. Exit\n" + 
 				"Enter an option:\n");
 		
-		//trouble
 			try {
 				
 				selectMenuNum = sr.nextInt();
@@ -56,9 +56,10 @@ public class MiniNet {
 	private void addPerson()
 	{
 		Person pr,friend;
+		Adult parent;
 		String prName, prPic, prStatus, frName;
 		int prAge;
-		Adult parent;
+		
 		
 		
 		//more details @Emma
@@ -75,6 +76,7 @@ public class MiniNet {
 		
 		
 		//System.out.println(prName+" "+prAge+" "+ prPic+" "+prStatus+" ");
+		
 		if(prAge>=16)
 			pr = new Adult();
 		else if(prAge>2)
@@ -201,6 +203,7 @@ public class MiniNet {
 				}
 
 			}
+		
 			if (!isSetParents[0]) {
 				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
 				parentsName[0] = sr.nextLine();
@@ -225,6 +228,80 @@ public class MiniNet {
 		System.out.println("Add Parents successful!\n");
 	}
 	
+	public void displayIsFriends()
+	{
+		Person tempPerson;
+		String[] peopleName = new String[2];
+		Scanner sr = new Scanner(System.in);
+		System.out.println("Please input two names: ");
+		peopleName[0]=sr.next();
+		peopleName[1]=sr.next();
+		sr.nextLine();
+		while(!isInList(peopleName[0]))
+		{
+			System.out.println(peopleName[0]+" is not in the list. Please input again. ");
+			peopleName[0]=sr.next();
+		}
+		tempPerson=getPerson(peopleName[0]);
+		
+		if(tempPerson instanceof Adult)
+		{
+			
+			if(((Adult)tempPerson).isFriend(peopleName[1]))
+				System.out.println(peopleName[0]+" and "+peopleName[1]+" are Friends\n");
+			else
+				System.out.println(peopleName[0]+" and "+peopleName[1]+" are not Friends\n");
+		}
+	
+	}
+	
+	public boolean isInList(String inputName)
+	{
+		for (int i = 0;i<member.size();i++)
+		{
+			if(inputName.equals(member.get(i).getName()))
+				{
+				//memberNum=i;
+				return true;
+				}
+		}
+		return false;
+	}
+	
+	
+	public Person getPerson(String inputName)
+	{
+		int index=-1;
+		for (int i = 0;i<member.size();i++)
+		{
+			if(inputName.equals(member.get(i).getName()))
+				{
+				index=i;
+				}
+		}
+		return member.get(index);
+
+	}
+	
+
+	
+	public void selectPersonByName()
+	{
+		String perName;
+		Scanner sr = new Scanner(System.in);
+		System.out.println("Please input person name: ");
+		perName=sr.nextLine();
+		while(!isInList(perName))
+		{
+			System.out.println("The person is not in the list. Please input again. ");
+			perName=sr.nextLine();
+		}
+			displayPersonDetail(getPerson(perName));		
+		
+	}
+	
+	
+	
 	public void runProfile() {
 		
 		testData();
@@ -235,8 +312,10 @@ public class MiniNet {
 				listEveryone();
 				break;
 			case 2:
+				selectPersonByName();
 				break;
 			case 3:
+				displayIsFriends();
 				break;
 			case 4:
 				addPerson();
