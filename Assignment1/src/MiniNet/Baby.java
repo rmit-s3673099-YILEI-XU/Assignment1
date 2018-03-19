@@ -7,7 +7,7 @@ package MiniNet;
  * @author Yilei Xu
  *
  */
-public class Baby extends Person{
+public class Baby extends Person implements ParentsController{
 
 	private String parents[]= new String[2];
 
@@ -23,6 +23,18 @@ public class Baby extends Person{
 	 */
 	public void setParents(String[] parents) {
 		this.parents = parents;
+	}
+
+	@Override
+	void displayProfile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void displayParents() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

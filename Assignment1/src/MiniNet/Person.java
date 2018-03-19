@@ -20,6 +20,8 @@ public abstract class Person {
 	 * @param pic
 	 * @param status
 	 */
+	abstract void displayProfile();
+	
 	public Person(String name, int age, String pic, String status) {
 		this.name = name;
 		this.age = age;

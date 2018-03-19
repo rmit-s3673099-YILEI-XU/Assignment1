@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Yilei Xu
  *
  */
-public class Adult extends Person implements FriendsController{
+public class Adult extends Person implements FriendsController, ParentsController{
 	
 	private ArrayList<Person> friendList = new ArrayList(); 
 	private ArrayList<Person> childrenList = new ArrayList(); 
@@ -24,6 +24,19 @@ public class Adult extends Person implements FriendsController{
 	public Adult(String name, int age, String pic, String status)
 	{
 		super(name,age,pic,status);
+	}
+	
+	@Override
+	void displayProfile() {
+		// TODO Auto-generated method stub
+		System.out.println("\nPerson Profile\n"+"===================================");
+		System.out.println("Name: "+this.getName());
+		System.out.println("Age: "+this.getAge());
+		System.out.println("Picture: "+this.getPic());
+		System.out.println("Stautus: "+this.getStatus());
+		displayFriendsList();
+		displayChildrenList();
+		System.out.println("");
 	}
 	
 	public ArrayList getFriendsList() {
@@ -75,5 +88,14 @@ public class Adult extends Person implements FriendsController{
 		{
 			System.out.print(childrenList.get(i).getName()+" ");
 		}
+		System.out.println("");
 	}
+
+	@Override
+	public void displayParents() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

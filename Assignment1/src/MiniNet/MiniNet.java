@@ -118,7 +118,7 @@ public class MiniNet {
 		
 	}
 	
-	private void displayPersonDetail(Person p)
+/*	private void displayPersonDetail(Person p)
 	{
 		System.out.println("Person Detail\n"+"===================================");
 		System.out.println("Name:"+p.getName());
@@ -137,7 +137,7 @@ public class MiniNet {
 		}
 		
 	}
-	
+	*/
 	private void listEveryone()
 	{
 		for(int i =0;i<member.size();i++)
@@ -163,7 +163,7 @@ public class MiniNet {
 			
 		}
 		if(selectPersonNum !=member.size()+1)
-			displayPersonDetail(member.get(selectPersonNum-1));
+			member.get(selectPersonNum-1).displayProfile();
 		
 		
 	}
@@ -261,7 +261,6 @@ public class MiniNet {
 		{
 			if(inputName.equals(member.get(i).getName()))
 				{
-				//memberNum=i;
 				return true;
 				}
 		}
@@ -287,7 +286,8 @@ public class MiniNet {
 	
 	public void selectPersonByName()
 	{
-		String perName;
+		String perName;	
+		Person selectedPerson;
 		Scanner sr = new Scanner(System.in);
 		System.out.println("Please input person name: ");
 		perName=sr.nextLine();
@@ -296,9 +296,60 @@ public class MiniNet {
 			System.out.println("The person is not in the list. Please input again. ");
 			perName=sr.nextLine();
 		}
+		selectedPerson = getPerson(perName);
+		System.out.println("Select "+ selectedPerson.getName()+" is successful!\n");
+		selectOptions();
 		
-		System.out.println("Select "+ getPerson(perName));
-			displayPersonDetail(getPerson(perName));		
+		
+	}
+	
+	public void displaySelectOption()
+	{
+		System.out.println("Selection Option\n"+"===================================");
+		System.out.println("1. Display Profile.");
+		System.out.println("2. Update Profile.");
+		System.out.println("3. Delete person.");
+		System.out.println("4. Back.");
+		System.out.println("Enter an option: ");
+	}
+	
+	public void selectOptions()
+	{
+		int selectOptionNum=0;
+		boolean goBackMainMenu = false;
+		
+		Scanner sr = new Scanner(System.in);
+		while (!goBackMainMenu) {
+			do {
+				displaySelectOption();
+				selectOptionNum = sr.nextInt();
+			} while (selectOptionNum < 1 || selectOptionNum > 4);
+
+			switch (selectOptionNum) {
+			case 1:
+				selectedPerson.displayProfile();
+				break;
+			case 2:
+				updateProfile();
+				break;
+			case 3:
+				deletePerson();
+				goBackMainMenu = true;
+				break;
+			case 4:
+				goBackMainMenu = true;
+				break;
+			}	
+		}
+	}
+	
+	//@Emma
+	public void updateProfile()
+	{
+		
+	}
+	
+	public void deletePerson() {
 		
 	}
 	
