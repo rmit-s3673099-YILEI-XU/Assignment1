@@ -114,6 +114,10 @@ public class MiniNet {
 		{
 			addParents(pr);
 
+		}else if(pr instanceof Baby) {
+			
+			addParents(pr);
+			
 		}
 		
 	}
