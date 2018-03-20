@@ -40,31 +40,42 @@ public class Children extends Person implements ParentsController{
 		System.out.println("Picture: "+this.getPic());
 		System.out.println("Stautus: "+this.getStatus());
 		displayParents();
+		displayFriendsList();
 		
 	}
 	
 	public boolean addFriends(Person pr) {
-        int ageGap = Math.abs(this.getAge() - pr.getAge());
-        if (ageGap <= 3) {
-            friends.add(pr);
-            ((Children) pr).friends.add(this);
-            return true;
-        } else {
-            System.out.println("Gap is too big, they cannot be friends.");
-            return false;
+		int ageGap = Math.abs(this.getAge() - pr.getAge());
+
+		if (parents[0].equals(((Children) pr).getParents()[0]) || parents[0].equals(((Children) pr).getParents()[1])) {
+			System.out.println("They are in same family, they cannot be friends.");
+			return false;
+		
+		} else {
+			
+			if (ageGap <= 3) {
+				friends.add(pr);
+				((Children) pr).friends.add(this);
+				return true;
+			} else {
+				System.out.println("Gap is too big, they cannot be friends.");
+				return false;
+			}
+		}
+	}
+
+     public ArrayList getFriendsList() {
+
+            return friends;
+
         }
-    }
-
-     public String[] returnFriendsList() {
-
-            String showFriendList[]= new String[friends.size()];
-            for(int i=0; i < friends.size();i++ )
-            {
-                showFriendList[i]=friends.get(i).getName();
-            }
-
-            return showFriendList;
-
-        }
+     
+     public void displayFriendsList()
+ 	{
+ 		System.out.print("Frinds: ");
+ 		for(int i =0;i<friends.size();i++)
+ 			System.out.print(friends.get(i).getName()+" ");
+ 		System.out.println("");		
+ 	}
 
 }
