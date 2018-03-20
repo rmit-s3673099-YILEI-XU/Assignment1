@@ -392,81 +392,87 @@ public class MiniNet {
 		}
 	}
 	
-	//@Emma
-	public void updateProfile(Person selectedPerson)
-	{
-		int updateNum = 0;
-		Scanner sr = new Scanner(System.in);	
+    //@Emma
+    public void updateProfile(Person selectedPerson)
+    {
+        int updateNum = 0;
+        Scanner sr = new Scanner(System.in);
+
+        do {
+            System.out.print(
+                    "select what do you want to update"+
+                            "===================================\n"+
+                            "1. Name\n" +
+                            "2. Age\n" +
+                            "3. Pic\n" +
+                            "4. Status\n" +
+                            "5. Exit\n");
+
+            try {
+
+                updateNum = sr.nextInt();
+                sr.nextLine();
+
+            } catch (Exception e) {
+                System.out.println("Please input a number from menu number.");
+                updateNum = 0;
+                break;
+            }
+
+            if(updateNum<1||updateNum>5)
+                System.out.println("Please input a number from menu number.\n");
+
+        }
+        while(updateNum<1 || updateNum>4);
+
+
+        switch (updateNum) {
+
+            case 1:
+                System.out.println("Please input Person Name:");
+                String prName = sr.nextLine();
+                selectedPerson.setName(prName);
+                System.out.println("Update successful!");
+                break;
+            case 2:
+                if(selectedPerson instanceof Baby)
+                    System.out.println("dddddd");
+                System.out.println("Please input Person Age:");
+                int prAge = sr.nextInt();
+                selectedPerson.setAge(prAge);
+                if(prAge>=18) {
+                    member.add(new Adult(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
+                }
+                else if(prAge>2){
+                    member.add(new Children(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
+                }
+        
+        member.remove(selectedPerson);
+
+        System.out.println("Update successful!");
+        break;
+        case 3:
+        System.out.println("Do you want to change the pic? Y/N");
+        String prPic= sr.nextLine();
+        System.out.println("Update successful!");
+        break;
+        case 4:
+        System.out.println("Please input new status. If there is no status, please input none.");
+        String prStatus= sr.nextLine();
+        System.out.println("Update successful!");
+        case 5:
+        break;
+
+        default: System.out.println("Please input a number from menu number.\n");
+        break;
+
+    }
+    }
+
+
 		
-		do {
-				System.out.print(
-				"select what do you want to update"+
-				"===================================\n"+
-				"1. Name\n" + 
-				"2. Age\n" + 
-				"3. Pic\n" + 
-				"4. Status\n" + 
-				"5. Exit\n");
 		
-			try {
-				
-				updateNum = sr.nextInt();
-				
-			} catch (Exception e) {
-				System.out.println("Please input a number from menu number.");
-				updateNum = 0;
-				break;
-			}
-			
-			if(updateNum<1||updateNum>5)
-				System.out.println("Please input a number from menu number.\n");
-		
-		}
-		while(updateNum<1 || updateNum>5);
-		
-		switch (updateNum) {
-		
-		case 1:
-			System.out.println("Please input Person Name:");
-			String prName = sr.nextLine();
-			selectedPerson.setName(prName);
-			break;
-		case 2:
-			System.out.println("Please input Person Age:");
-			int prAge = sr.nextInt();
-			selectedPerson.setAge(prAge);
-			break;
-		case 3:
-			System.out.println("Do you want to change the pic? Y/N");
-	//		prPic= sr.nextLine();
-			break;
-		case 4:
-//			goBackMainMenu = true;
-			break;
-		}	
-			
-	
-			
-			
-			sr.nextLine();		
-			
-			System.out.println("Please input Person status. If there is no status, please input none.");
-//			prStatus= sr.nextLine();
-//	
-//	
-//	    pr.setName(prName);
-//		pr.setAge(prAge);
-//		pr.setPic(prPic);
-//		pr.setStatus(prStatus);
-	}
-		
-		
-		
-//		member.add(pr);
-//		
-//		System.out.println("Update successful!");
-//		
-//	}
+
 	
 	public void deletePerson(Person selectedPerson) {
 		
