@@ -16,6 +16,7 @@ public class MiniNet {
 	private Person selectedPerson;
 	private int selectMenuNum = 0;
 	private int selectPersonNum = 0;
+	private int updateNum = 0;
 	private boolean isExit = false;
 	//private int memberNum=-1;
 	
@@ -410,8 +411,8 @@ public class MiniNet {
     //@Emma
     public void updateProfile(Person selectedPerson)
     {
-        int updateNum = 0;
-        Scanner sr = new Scanner(System.in);
+        
+    		Scanner sr = new Scanner(System.in);
 
         do {
             System.out.print(
@@ -439,9 +440,16 @@ public class MiniNet {
 
         }
         while(updateNum<1 || updateNum>4);
-
-
-		switch (updateNum) {
+        
+        updateSelection(updateNum);
+        
+    }
+    
+    public void updateSelection(int num) {
+    
+    	Scanner sr = new Scanner(System.in);
+		
+    	switch (updateNum) {
 
 		case 1:
 			System.out.println("Please input Person Name:");
@@ -450,21 +458,24 @@ public class MiniNet {
 			System.out.println("Update successful!");
 			break;
 		case 2:
-			if (selectedPerson instanceof Baby)
-				System.out.println("dddddd");
 			System.out.println("Please input Person Age:");
 			int prAge = sr.nextInt();
 			selectedPerson.setAge(prAge);
 			if (prAge >= 18) {
 				member.add(new Adult(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
 						selectedPerson.getStatus()));
+			
 			} else if (prAge > 2) {
 				member.add(new Children(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
 						selectedPerson.getStatus()));
-			}
-
+				
+			}else 
+				member.add(new Baby(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
+            
 			member.remove(selectedPerson);
-
+			if(selectedPerson instanceof Baby) {
+				System.out.print("baby");
+			}
 			System.out.println("Update successful!");
 			break;
 		case 3:
@@ -486,9 +497,6 @@ public class MiniNet {
 		}
     }
 
-
-		
-		
 
 	
 	public void deletePerson(Person selectedPerson) {
