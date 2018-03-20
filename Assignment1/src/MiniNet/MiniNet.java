@@ -200,31 +200,75 @@ public class MiniNet {
 		Scanner sr = new Scanner(System.in);
 		String[] parentsName = new String[2];
 		Person[] parents = new Person[2];
-		boolean[] isSetParents = {false, false};
+		//boolean[] isSetParents = {false, false};
 		
-		System.out.println("Please input parents name: ");
-		parentsName[0]= sr.next();
-		parentsName[1]= sr.next();
+		System.out.println("Please input parent 1 name: ");
+		parentsName[0]= sr.nextLine();
+		parents[0]=setParents(parentsName[0], pr);
+		parentsName[0]=parents[0].getName();
+		System.out.println("Please input parent 2 name: ");
+		parentsName[1]= sr.nextLine();
+		
+		System.out.println("xxxxxx"+parentsName[0]+" "+parentsName[1]);
+		while(parentsName[1].equals(parentsName[0]))
+		{
+			System.out.println("Same name with parent1. Please input again. ");
+			parentsName[1]= sr.nextLine();
+		}
+		parents[1]=setParents(parentsName[1], pr);
+		
+		//parentsName[1]= sr.next();
+		/*
 		while(parentsName[0].equals(parentsName[1]))
 		{
 			System.out.println("Same name! Please input again: ");
 			parentsName[0]= sr.next();
 			parentsName[1]= sr.next();
-		}
-		sr.nextLine();
+		}*/
 		
-		while (!isSetParents[0] || !isSetParents[1]) {
-			
-			
+		
+		/*
+		while(!isInList(parentsName[0])) {
+			System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
+			parentsName[0] = sr.nextLine();
+			if(parentsName[0].equals(parentsName[1]))
+			{
+				System.out.println("Same name with another parents, please input again!");
+				parentsName[0] = sr.nextLine();
+			}
+		}
+		while(!isInList(parentsName[1])) {
+			System.out.println(parentsName[1] + " is not in system list. Please check the name and input again.");
+			parentsName[1] = sr.nextLine();
+			if(parentsName[1].equals(parentsName[0]))
+			{
+				System.out.println("Same name with another parents, please input again!");
+				parentsName[1] = sr.nextLine();
+			}
+		}
+		*/
+		
+		
+		/*
+		while (!isSetParents[0]) {
+			if(isInList(parentsName[0])) {
 				if(getPerson(parentsName[0]) instanceof Adult) {
 					
 					parents[0] = getPerson(parentsName[0]);
 					((Adult)getPerson(parentsName[0])).addChildren(pr);
-					((Adult)getPerson(parentsName[1])).addChildren(pr);
+					isSetParents[0]=true;
+					//((Adult)getPerson(parentsName[1])).addChildren(pr);
 				}
+			}else {
+				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
+				parentsName[0] = sr.nextLine();
+			}
+			
+			while(!isSetParents[1]) {
 				
-				//for (int i = 0; i < member.size(); i++) {
-				//				if (member.get(i).getName().equals(parentsName[0]) && member.get(i) instanceof Adult) {
+			}*/
+//				for (int i = 0; i < member.size(); i++) {
+//				if (member.get(i).getName().equals(parentsName[0]) && member.get(i) instanceof Adult) {
 //					parents[0] = member.get(i);
 //					((Adult)member.get(i)).addChildren(pr);
 //					isSetParents[0] = true;
@@ -239,28 +283,51 @@ public class MiniNet {
 //
 //			}
 		
-			if (!isSetParents[0]) {
-				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
-				parentsName[0] = sr.nextLine();
-				if(parentsName[0].equals(parentsName[1]))
-				{
-					System.out.println("Same name with another parents, please input again!");
-					parentsName[0] = sr.nextLine();
-				}
-			}
-			if (!isSetParents[1]) {
-				System.out.println(parentsName[1] + " is not in system list. Please check the name and input again.");
-				parentsName[1] = sr.nextLine();
-				if(parentsName[1].equals(parentsName[0]))
-				{
-					System.out.println("Same name with another parents, please input again!");
-					parentsName[1] = sr.nextLine();
-				}
-
-			}
-		}
+//			if (!isSetParents[0]) {
+//				System.out.println(parentsName[0] + " is not in system list. Please check the name and input again.");
+//				parentsName[0] = sr.nextLine();
+//				if(parentsName[0].equals(parentsName[1]))
+//				{
+//					System.out.println("Same name with another parents, please input again!");
+//					parentsName[0] = sr.nextLine();
+//				}
+//			}
+//			if (!isSetParents[1]) {
+//				System.out.println(parentsName[1] + " is not in system list. Please check the name and input again.");
+//				parentsName[1] = sr.nextLine();
+//				if(parentsName[1].equals(parentsName[0]))
+//				{
+//					System.out.println("Same name with another parents, please input again!");
+//					parentsName[1] = sr.nextLine();
+//				}
+//
+//			}
+////		}
 		((Children)pr).setParents(parents);
 		System.out.println("Add Parents successful!\n");
+	}
+	
+	public Person setParents(String parentName, Person pr) {
+		Scanner sr= new Scanner(System.in);
+		Person parent = new Adult();
+		boolean isSetParent = false;
+		while(!isSetParent) {
+		if(isInList(parentName)) {
+			if(getPerson(parentName) instanceof Adult) {
+				
+				parent= getPerson(parentName);
+			
+				((Adult)getPerson(parentName)).addChildren(pr);
+				isSetParent= true;
+				//isSetParents[0]=true;
+				//((Adult)getPerson(parentsName[1])).addChildren(pr);
+			}
+		}else {
+			System.out.println(parentName + " is not in system list. Please check the name and input again.");
+			parentName = sr.nextLine();
+		}
+		}
+		return parent;
 	}
 	
 	public void displayIsFriends()
@@ -333,7 +400,7 @@ public class MiniNet {
 		}
 		selectedPerson = getPerson(perName);
 		System.out.println("Select "+ selectedPerson.getName()+" is successful!\n");
-		selectOptions();
+		selectOptions(selectedPerson);
 		
 		
 	}
@@ -348,7 +415,7 @@ public class MiniNet {
 		System.out.println("Enter an option: ");
 	}
 	
-	public void selectOptions()
+	public void selectOptions(Person selectedPerson)
 	{
 		int selectOptionNum=0;
 		boolean goBackMainMenu = false;
@@ -365,10 +432,10 @@ public class MiniNet {
 				selectedPerson.displayProfile();
 				break;
 			case 2:
-				updateProfile();
+				updateProfile(selectedPerson);
 				break;
 			case 3:
-				deletePerson();
+				deletePerson(selectedPerson);
 				goBackMainMenu = true;
 				break;
 			case 4:
@@ -379,12 +446,12 @@ public class MiniNet {
 	}
 	
 	//@Emma
-	public void updateProfile()
+	public void updateProfile(Person selectedPerson)
 	{
 		
 	}
 	
-	public void deletePerson() {
+	public void deletePerson(Person selectedPerson) {
 		
 	}
 	
