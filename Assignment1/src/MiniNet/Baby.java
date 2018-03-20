@@ -7,9 +7,9 @@ package MiniNet;
  * @author Yilei Xu
  *
  */
-public class Baby extends Person implements ParentsController{
+public class Baby extends Person implements ParentRelation{
 
-	private Person parents[]= new Person[2];
+	//private Person parents[]= new Person[2];
 	
 	public Baby() {
 
@@ -21,22 +21,7 @@ public class Baby extends Person implements ParentsController{
         super(name,age,pic,status);
         }
 
-	/**
-	 * @return the parents
-	 */
-	public Person[] getParents() {
-		
-		return parents;
-	}
 
-	/**
-	 * @param parents the parents to set
-	 */
-	public void setParents(Person[] parents) {
-		
-		this.parents = parents;
-		
-	}
 
 	@Override
 	public void displayProfile() {
@@ -46,15 +31,29 @@ public class Baby extends Person implements ParentsController{
 		System.out.println("Age: "+this.getAge());
 		System.out.println("Picture: "+this.getPic());
 		System.out.println("Stautus: "+this.getStatus());
+		displayRelationship();
 		System.out.println("");
 		
 	}
 
+
+	private void displayRelationship() {
+		// TODO Auto-generated method stub
+			
+		System.out.print("Parents: ");
+		for(int i =0;i<super.getRelationship().size();i++) {
+			if(super.getRelationship().get(i).getRelationType().equals("Parent"))
+			System.out.print(super.getRelationship().get(i).getRelevantPerson().getName()+" ");
+		}
+		System.out.println("");
+	}
 	@Override
-	public void displayParents() {
-		
-		System.out.println("Parents: " + getParents()[0].getName() + " " + getParents()[1].getName());
-		
+	public void addParent(Person seletedPerson) {
+		// TODO Auto-generated method stub
+		RelationshipStore friendRelation = new RelationshipStore();
+		friendRelation.setRelationType("Parent");
+		friendRelation.setRelevantPerson(seletedPerson);
+		super.addRelationship(friendRelation);
 	}
 	
 	

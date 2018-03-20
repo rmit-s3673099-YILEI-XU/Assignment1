@@ -3,6 +3,8 @@
  */
 package MiniNet;
 
+import java.util.ArrayList;
+
 /**
  * @author Yilei Xu
  *
@@ -13,6 +15,10 @@ public abstract class Person {
 	private int age;
 	private String pic;
 	private String status;
+	private ArrayList<RelationshipStore> relationship = new ArrayList<RelationshipStore>();
+	
+	
+	public abstract void displayProfile();
 	
 	/**
 	 * @param name
@@ -20,7 +26,6 @@ public abstract class Person {
 	 * @param pic
 	 * @param status
 	 */
-	abstract void displayProfile();
 	
 	public Person(String name, int age, String pic, String status) {
 		this.name = name;
@@ -29,6 +34,15 @@ public abstract class Person {
 		this.status = status;
 	}
 	
+	/**
+	 * @return the relationship
+	 */
+	public ArrayList<RelationshipStore> getRelationship() {
+		return relationship;
+	}
+
+
+
 	public Person() {};
 	/**
 	 * @return the name
@@ -80,5 +94,8 @@ public abstract class Person {
 		this.status = status;
 	}
 	
+	public void addRelationship(RelationshipStore relationship) {
+		this.relationship.add(relationship);
+	}
 
 }

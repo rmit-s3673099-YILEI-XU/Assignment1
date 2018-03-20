@@ -178,7 +178,7 @@ public class MiniNet {
 			}
 			friend = getPerson(frName);
 			if (friend instanceof Adult) {
-				((Adult) pr).addFriends(friend);
+				((Adult) pr).addFriend(friend);
 				isAddFriend= true;
 			}
 			else {
@@ -206,7 +206,7 @@ public class MiniNet {
 			}
 			friend = getPerson(frName);
 			if (friend instanceof Children) {
-				if(((Children) pr).addFriends(friend))
+				if(((Children) pr).addFriend(friend))
 					isAddFriend= true;
 				else {
 					frName = sr.nextLine();
@@ -248,29 +248,36 @@ public class MiniNet {
 		}
 		
 	
-		((Children)pr).setParents(parents);
+		((Children)pr).addParent(parents[0]);
+		((Children)pr).addParent(parents[1]);
 		System.out.println("Add Parents successful!\n");
 	}
 	
 	public Person getLegalParents(String parentName, Person pr) {
-		Scanner sr= new Scanner(System.in);
+		Scanner sr = new Scanner(System.in);
 		Person parent = new Adult();
 		boolean isSetParent = false;
-		
-		while(!isSetParent) {
-		if(isInList(parentName)) {
-			if(getPerson(parentName) instanceof Adult) {
-				
-				parent= getPerson(parentName);
-			
-				((Adult)getPerson(parentName)).addChildren(pr);
-				isSetParent= true;
+
+		while (!isSetParent) {
+			if (isInList(parentName)) {
+				if (getPerson(parentName) instanceof Adult) {
+
+					parent = getPerson(parentName);
+
+					((Adult) getPerson(parentName)).addChildren(pr);
+					isSetParent = true;
+				}
+				else
+				{
+					System.out.println(parentName + " is not adult. Please check the name and input again.");
+					parentName = sr.nextLine();
+				}
+
+			} else {
+				System.out.println(parentName + " is not in system list. Please check the name and input again.");
+				parentName = sr.nextLine();
+				//System.out.println("xxxxxxxxxxx");
 			}
-			
-		}else {
-			System.out.println(parentName + " is not in system list. Please check the name and input again.");
-			parentName = sr.nextLine();
-		}
 		}
 		return parent;
 	}
@@ -279,24 +286,32 @@ public class MiniNet {
 	
 	public void displayIsFriends()
 	{
-		Person tempPerson;
+		Person tempPerson1,tempPerson2;
 		String[] peopleName = new String[2];
 		Scanner sr = new Scanner(System.in);
 		System.out.println("Please input two names: ");
 		peopleName[0]=sr.next();
 		peopleName[1]=sr.next();
 		sr.nextLine();
-		while(!isInList(peopleName[0]))
+		while(!isInList(peopleName[0])||!isInList(peopleName[1]))
 		{
+			if(!isInList(peopleName[0])){
 			System.out.println(peopleName[0]+" is not in the list. Please input again. ");
-			peopleName[0]=sr.next();
+			peopleName[0]=sr.nextLine();
+			}
+			else
+			{
+				System.out.println(peopleName[1]+" is not in the list. Please input again. ");
+				peopleName[1]=sr.nextLine();
+			}
 		}
-		tempPerson=getPerson(peopleName[0]);
+		tempPerson1=getPerson(peopleName[0]);
+		tempPerson2=getPerson(peopleName[1]);
 		
-		if(tempPerson instanceof Adult)
+		if(tempPerson1 instanceof Adult)
 		{
 			
-			if(((Adult)tempPerson).isFriend(peopleName[1]))
+			if(((Adult)tempPerson1).isFriend(tempPerson2))
 				System.out.println(peopleName[0]+" and "+peopleName[1]+" are Friends\n");
 			else
 				System.out.println(peopleName[0]+" and "+peopleName[1]+" are not Friends\n");
@@ -426,47 +441,49 @@ public class MiniNet {
         while(updateNum<1 || updateNum>4);
 
 
-        switch (updateNum) {
+		switch (updateNum) {
 
-            case 1:
-                System.out.println("Please input Person Name:");
-                String prName = sr.nextLine();
-                selectedPerson.setName(prName);
-                System.out.println("Update successful!");
-                break;
-            case 2:
-                if(selectedPerson instanceof Baby)
-                    System.out.println("dddddd");
-                System.out.println("Please input Person Age:");
-                int prAge = sr.nextInt();
-                selectedPerson.setAge(prAge);
-                if(prAge>=18) {
-                    member.add(new Adult(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
-                }
-                else if(prAge>2){
-                    member.add(new Children(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
-                }
-        
-        member.remove(selectedPerson);
+		case 1:
+			System.out.println("Please input Person Name:");
+			String prName = sr.nextLine();
+			selectedPerson.setName(prName);
+			System.out.println("Update successful!");
+			break;
+		case 2:
+			if (selectedPerson instanceof Baby)
+				System.out.println("dddddd");
+			System.out.println("Please input Person Age:");
+			int prAge = sr.nextInt();
+			selectedPerson.setAge(prAge);
+			if (prAge >= 18) {
+				member.add(new Adult(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
+						selectedPerson.getStatus()));
+			} else if (prAge > 2) {
+				member.add(new Children(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
+						selectedPerson.getStatus()));
+			}
 
-        System.out.println("Update successful!");
-        break;
-        case 3:
-        System.out.println("Do you want to change the pic? Y/N");
-        String prPic= sr.nextLine();
-        System.out.println("Update successful!");
-        break;
-        case 4:
-        System.out.println("Please input new status. If there is no status, please input none.");
-        String prStatus= sr.nextLine();
-        System.out.println("Update successful!");
-        case 5:
-        break;
+			member.remove(selectedPerson);
 
-        default: System.out.println("Please input a number from menu number.\n");
-        break;
+			System.out.println("Update successful!");
+			break;
+		case 3:
+			System.out.println("Do you want to change the pic? Y/N");
+			String prPic = sr.nextLine();
+			System.out.println("Update successful!");
+			break;
+		case 4:
+			System.out.println("Please input new status. If there is no status, please input none.");
+			String prStatus = sr.nextLine();
+			System.out.println("Update successful!");
+		case 5:
+			break;
 
-    }
+		default:
+			System.out.println("Please input a number from menu number.\n");
+			break;
+
+		}
     }
 
 
@@ -475,6 +492,24 @@ public class MiniNet {
 
 	
 	public void deletePerson(Person selectedPerson) {
+		if(selectedPerson instanceof Adult)
+		{
+			deleteForFriendList((Adult)selectedPerson);
+		}
+		
+		
+	}
+	
+	public void deleteForFriendList(Adult adult)
+	{
+//		Person friend;
+//		for(int i =0; i<adult.getFriendsList().size();i++)
+//		{
+//			friend = adult.getFriendsList().get(i);	
+//			((Adult)friend).getFriendsList().remove(adult);
+//			
+//		}
+		
 		
 	}
 	
@@ -514,9 +549,9 @@ public class MiniNet {
 		Person BB = new Adult("BB",28,"N","OO");
 		Person CC = new Adult("CC",18,"Y","XX");
 		Person DD = new Adult("DD",30,"Y","TT");
-		((Adult)AA).addFriends(BB);
-		((Adult)AA).addFriends(DD);
-		((Adult)CC).addFriends(DD);
+		((Adult)AA).addFriend(BB);
+		((Adult)AA).addFriend(DD);
+		((Adult)CC).addFriend(DD);
 		member.add(AA);
 		member.add(BB);
 		member.add(CC);
