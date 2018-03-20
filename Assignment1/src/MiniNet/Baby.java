@@ -10,6 +10,16 @@ package MiniNet;
 public class Baby extends Person implements ParentsController{
 
 	private Person parents[]= new Person[2];
+	
+	public Baby() {
+
+        super();
+        }
+
+	public Baby(String name, int age, String pic, String status)
+        {
+        super(name,age,pic,status);
+        }
 
 	/**
 	 * @return the parents

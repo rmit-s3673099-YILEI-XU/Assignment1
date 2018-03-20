@@ -13,6 +13,19 @@ public class Children extends Person implements ParentsController{
 	private ArrayList<Person> friends = new ArrayList();
 	private Person parents[]= new Person[2];
 	
+	
+	public Children() {
+
+        super();
+        
+        }
+
+	public Children(String name, int age, String pic, String status)
+        {
+		
+        super(name,age,pic,status);
+        
+        }
 	/**
 	 * @return the parents
 	 */
