@@ -43,7 +43,7 @@ public class Adult extends Person implements FriendRelation{
 		// TODO Auto-generated method stub
 		
 		RelationshipStore friendRelation1 = new RelationshipStore();//for own relationship
-		RelationshipStore friendRelation2 = new RelationshipStore();//for friend' relationship
+		RelationshipStore friendRelation2 = new RelationshipStore();//for friend's relationship
 		
 		friendRelation1.setRelationType("Friend");
 		friendRelation2.setRelationType("Friend");
