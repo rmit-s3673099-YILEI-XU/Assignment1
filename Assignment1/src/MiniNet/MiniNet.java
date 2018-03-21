@@ -187,18 +187,28 @@ public class MiniNet {
 				frName = sr.nextLine();
 			}
 			friend = getPerson(frName);
-			if (friend instanceof Adult) {
-				((Adult) pr).addFriend(friend);
-				isAddFriend= true;
+			while(frName.equals(pr.getName())) {
+				System.out.println(frName + " is the person himself/herself. Please input again. ");
+				frName = sr.nextLine();
 			}
-			else {
-				System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
+			while(((Adult)pr).isFriend(friend)) {
+				System.out.println(frName + " is already his/her friends. Please input again. ");
+				frName = sr.nextLine();
+			}
+			friend = getPerson(frName);
+			if (friend instanceof Adult ) {
+					((Adult) pr).addFriend(friend);
+					isAddFriend= true;
+					System.out.println("Add Friend successful!");
+					}else{
+						System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
+					}
 				frName = sr.nextLine();
 			}
 		}
-		System.out.println("Add Friend successful!");
+		
 
-	}
+	
 	private void addChildrenFriendsProcess(Person pr)
 	{
 		Scanner sr = new Scanner(System.in);
@@ -448,8 +458,7 @@ public class MiniNet {
             }
         }
     }
-	
-    //@Emma
+
 	public void updateProfile(Person selectedPerson) {
 
         Scanner sr = new Scanner(System.in);
@@ -524,6 +533,7 @@ public class MiniNet {
                 System.out.println("Please input your new status. If there is no status, please input none.");
                 String prStatus = sr.nextLine();
                 System.out.println("Update successful!");
+                break;
             case 5:
                 updateAddFriends(selectedPerson);
                 break;
