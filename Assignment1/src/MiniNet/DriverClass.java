@@ -219,45 +219,48 @@ public class DriverClass {
 	}
 		
 	
-	private void addChildrenFriendsProcess(Person pr)
-	{
+	private void addChildrenFriendsProcess(Person pr) {
 		Scanner sr = new Scanner(System.in);
 		String frName;
 		Person friend;
 		boolean isAddFriend = false;
 		System.out.println("Please input friend name: ");
 		frName = sr.nextLine();
-		/* addFriends */
-		while(!isAddFriend) {
-			
+	
+		while (!isAddFriend) {
+
 			while (!isInList(frName)) {
-				System.out.println(frName + " is not in system list. Please input again. ");
+				System.out.println(frName + " is not in system list.Please input again");
 				frName = sr.nextLine();
 			}
 			friend = getPerson(frName);
-			if (friend instanceof Children) {
-				if(((Children) pr).addFriend(friend))
-					isAddFriend= true;
-				else {
+
+		if (!frName.equals(pr.getName())) {
+			if (!((Children) pr).isInRelationship(friend)) {
+				if (friend instanceof Children) {
+					((Children)pr).addFriend(friend);
+					isAddFriend = true;
 					
+				} else {
+					System.out.println(frName + " is not Children. They can't make friends. Please input again. ");
 					frName = sr.nextLine();
-					if(frName.equals("back")||frName.equals("BACK"))
-						break;
+		
 				}
-					
-			}
-			else {
-				System.out.println(frName + " is not Children. They can't make friends. Please input again.\nOr you can input 'back' to give up add friends.");
+			} else {
+
+				System.out.println(frName + " already has relationship with "+ pr.getName()+" . Please input again. ");
 				frName = sr.nextLine();
-				if(frName.equals("back")||frName.equals("BACK"))
-					break;
 			}
-		}
-		if(isAddFriend) {
-			System.out.println("Add Friend successful!");
+
+		} else {
+			System.out.println(frName + " is the person himself/herself.Please input again");
+			frName = sr.nextLine();
 		}
 
 	}
+	System.out.println("Add Friend successful!");
+	
+}
 	
 	public void addParentsProcess(Person pr) {
 		Scanner sr = new Scanner(System.in);
@@ -603,36 +606,44 @@ public class DriverClass {
 
     public void updateRemoveFriends(Person selectedPerson) {
         String friendName;
-        System.out.println("Please input the friend you want to remove");
+        boolean isRemoved = false;
+        
         Scanner sr = new Scanner(System.in);
-        friendName = sr.nextLine();
+        
+        while(!isRemoved) {
+        	System.out.println("Please input the friend you want to remove");
+        	friendName = sr.nextLine();
+        
         if(isInList(friendName)) {
         		if(selectedPerson instanceof Adult) {
         			if(((Adult)selectedPerson).isFriend(getPerson(friendName))) {
         				selectedPerson.getRelationship().remove(getPerson(friendName));
         				getPerson(friendName).getRelationship().remove(selectedPerson);
         				System.out.println("Remove friend successful");
+        				isRemoved = true;
         			}else {
-        				System.out.println("They are not friends, can't remove" + friendName + "Please input again");
-        				friendName = sr.nextLine();
+        				System.out.println("They are not friends, can't remove" + friendName + " " + "Please input again");
+        	
         			}
         		}else if(selectedPerson instanceof Children) {
         			if(((Children)selectedPerson).isFriend(getPerson(friendName))) {
         				selectedPerson.getRelationship().remove(getPerson(friendName));
         				getPerson(friendName).getRelationship().remove(selectedPerson);
         				System.out.println("Remove friend successful");
+        				isRemoved = true;
         			}else {
-        				System.out.println("They are not friends, can't remove" + friendName + "Please input again");
-        				friendName = sr.nextLine();
+        				System.out.println("They are not friends, can't remove" + friendName + " " + "Please input again");
+        			
         			}
         		}else {
         			System.out.println("Can't remove Baby, cause Baby doesn't have any friends" + "Please input again");
-        			friendName = sr.nextLine();
+        		
         		}
         		
         }else {
         		System.out.println(friendName + "is not in the List, can't remove" + friendName + "Please input again");
-        		friendName = sr.nextLine();
+        	
+        }
         }
         
  

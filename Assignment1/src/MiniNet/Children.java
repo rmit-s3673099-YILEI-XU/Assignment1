@@ -113,9 +113,25 @@ public class Children extends Person implements FriendRelation,ParentRelation{
 		
 	}
 
-	@Override
+
 	public boolean isFriend(Person seletedPerson) {
+	for(int i=0; i < this.getRelationship().size();i++ ) {
+			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
+				if(this.getRelationship().get(i).getRelationType().equals("Friend"))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isInRelationship(Person seletedPerson) {
 		// TODO Auto-generated method stub
+		for(int i=0; i < this.getRelationship().size();i++ ) {
+			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
+				
+					return true;
+			}
+		}
 		return false;
 	}
 
