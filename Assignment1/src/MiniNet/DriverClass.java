@@ -531,6 +531,7 @@ public class DriverClass {
 			String prStatus = sr.nextLine();
 			System.out.println("Update successful!");
 		case 5:
+			
 			break;
 
 		default:
@@ -539,7 +540,7 @@ public class DriverClass {
 
 		}
     }
-
+ 
 
 	
 	public boolean deletePerson(Person selectedPerson) {
@@ -560,8 +561,6 @@ public class DriverClass {
 //					break;
 			}
 		}
-		
-
 			deleteRelevantPerson(selectedPerson);
 			member.remove(selectedPerson);
 			//System.out.println("Delete successful!");
