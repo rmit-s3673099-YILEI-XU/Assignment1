@@ -181,6 +181,7 @@ public class DriverClass {
 		boolean isAddFriend = false;
 		System.out.println("Please input friend name: ");
 		frName = sr.nextLine();
+		
 		/* addFriends */
 		while (!isAddFriend) {
 
@@ -211,7 +212,6 @@ public class DriverClass {
 				System.out.println(frName + " is the person himself/herself.Please input again");
 				frName = sr.nextLine();
 			}
-
 
 		}
 		System.out.println("Add Friend successful!");
@@ -247,7 +247,7 @@ public class DriverClass {
 					
 			}
 			else {
-				System.out.println(frName + " is not Children. They can't make friends. Please input again.\n Or you can input 'back' to give up add freiends.");
+				System.out.println(frName + " is not Children. They can't make friends. Please input again.\nOr you can input 'back' to give up add friends.");
 				frName = sr.nextLine();
 				if(frName.equals("back")||frName.equals("BACK"))
 					break;
