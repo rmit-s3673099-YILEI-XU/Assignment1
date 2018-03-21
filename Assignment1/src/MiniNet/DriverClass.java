@@ -174,8 +174,7 @@ public class DriverClass {
 		
 	}
 	
-	private void addAdultFriendsProcess(Person pr)
-	{
+	private void addAdultFriendsProcess(Person pr) {
 		Scanner sr = new Scanner(System.in);
 		String frName;
 		Person friend;
@@ -183,39 +182,41 @@ public class DriverClass {
 		System.out.println("Please input friend name: ");
 		frName = sr.nextLine();
 		/* addFriends */
-		while(!isAddFriend) {
-			
+		while (!isAddFriend) {
+
 			while (!isInList(frName)) {
 				System.out.println(frName + " is not in system list.Please input again");
 				frName = sr.nextLine();
 			}
 			friend = getPerson(frName);
-			if(!frName.equals(pr.getName())) {
-				if(!((Adult)pr).isFriend(friend)) {
-					if (friend instanceof Adult ) {
+
+			if (!frName.equals(pr.getName())) {
+				if (!((Adult) pr).isInRelationship(friend)) {
+					if (friend instanceof Adult) {
 						((Adult) pr).addFriend(friend);
-						isAddFriend= true;
-						System.out.println("Add Friend successful!");
-						}else{
-							System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
-							isAddFriend = false;
-						}
-				}else {
-					
-					System.out.println(frName + " is already his/her friends. Please input again. ");
-					isAddFriend = false;
+						isAddFriend = true;
+						
+					} else {
+						System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
+						frName = sr.nextLine();
+			
+					}
+				} else {
+
+					System.out.println(frName + " already has relationship with "+ pr.getName()+" . Please input again. ");
+					frName = sr.nextLine();
 				}
-				
-			}else {
+
+			} else {
 				System.out.println(frName + " is the person himself/herself.Please input again");
-				isAddFriend = false;
-				break;
-			}
-		
-			}
-				System.out.println("Please input friend name: ");
 				frName = sr.nextLine();
 			}
+
+
+		}
+		System.out.println("Add Friend successful!");
+		
+	}
 		
 	
 	private void addChildrenFriendsProcess(Person pr)

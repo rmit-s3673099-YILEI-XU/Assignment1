@@ -86,6 +86,16 @@ public class Adult extends Person implements FriendRelation{
 		return false;
 	}
 	
+	public boolean isInRelationship(Person seletedPerson) {
+		// TODO Auto-generated method stub
+		for(int i=0; i < this.getRelationship().size();i++ ) {
+			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
+				
+					return true;
+			}
+		}
+		return false;
+	}
 	private void displayRelationship()
 	{
 		System.out.print("Friends: ");
