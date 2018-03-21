@@ -20,6 +20,8 @@ public class MiniNet {
 	private boolean isExit = false;
 	//private int memberNum=-1;
 	
+	
+	
 	private void mainMenu()
 	{
 		
@@ -32,8 +34,7 @@ public class MiniNet {
 				"2. Select a person\n" + 
 				"3. Are these two direct friends?\n" + 
 				"4. Add a person\n" + 
-				"5. Delete a person\n" + 
-				"6. Exit\n" + 
+				"5. Exit\n" + 
 				"Enter an option:\n");
 		
 			try {
@@ -54,6 +55,14 @@ public class MiniNet {
 	}
 
 	
+	/**
+	 * @return the member
+	 */
+	public ArrayList<Person> getMember() {
+		return member;
+	}
+
+
 	private void addPerson()
 	{
 		Person pr,friend;
@@ -210,16 +219,23 @@ public class MiniNet {
 				if(((Children) pr).addFriend(friend))
 					isAddFriend= true;
 				else {
+					
 					frName = sr.nextLine();
+					if(frName.equals("back")||frName.equals("BACK"))
+						break;
 				}
 					
 			}
 			else {
-				System.out.println(frName + " is not Children. They can't make friends. Please input again. ");
+				System.out.println(frName + " is not Children. They can't make friends. Please input again.\n Or you can input 'back' to give up add freiends.");
 				frName = sr.nextLine();
+				if(frName.equals("back")||frName.equals("BACK"))
+					break;
 			}
 		}
-		System.out.println("Add Friend successful!");
+		if(isAddFriend) {
+			System.out.println("Add Friend successful!");
+		}
 
 	}
 	
@@ -232,6 +248,7 @@ public class MiniNet {
 		System.out.println("Please input parent 1 name: ");
 		parentsName[0]= sr.nextLine();
 		parents[0]=getLegalParents(parentsName[0], pr);
+		//System.out.println(parents[0]+"\n"+getLegalParents(parentsName[0], pr));
 		parentsName[0]=parents[0].getName();
 		
 		System.out.println("Please input parent 2 name: ");
@@ -251,7 +268,21 @@ public class MiniNet {
 	
 		((Children)pr).addParent(parents[0]);
 		((Children)pr).addParent(parents[1]);
+		
+		for(int i =0;i<parents[0].getRelationship().size();i++)
+		{
+			if(parents[0].getRelationship().get(i).getRelevantPerson().equals(parents[1])) {
+				parents[0].getRelationship().get(i).setRelationType("Couple");
+			}
+		}
+		for(int i =0;i<parents[1].getRelationship().size();i++)
+		{
+			if(parents[1].getRelationship().get(i).getRelevantPerson().equals(parents[0])) {
+				parents[1].getRelationship().get(i).setRelationType("Couple");
+			}
+		}
 		System.out.println("Add Parents successful!\n");
+		
 	}
 	
 	public Person getLegalParents(String parentName, Person pr) {
@@ -500,24 +531,59 @@ public class MiniNet {
 
 	
 	public void deletePerson(Person selectedPerson) {
-		if(selectedPerson instanceof Adult)
-		{
-			deleteForFriendList((Adult)selectedPerson);
+		
+		Scanner sr = new Scanner(System.in);
+		System.out.println("Are you sure to delete "+selectedPerson.getName() +" Y/N");
+		if(sr.nextLine().equals("Y")) {
+		
+		for(int i = 0 ; i<selectedPerson.getRelationship().size();i++) {
+			
+			if(selectedPerson.getRelationship().get(i).getRelationType().equals("Child"))
+			{
+				deleteRelevantPerson(selectedPerson.getRelationship().get(i).getRelevantPerson());
+				System.out.println("The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
+				if(sr.nextLine().equals("N"))
+					break;
+			}
 		}
 		
+
+			deleteRelevantPerson(selectedPerson);
+			member.remove(selectedPerson);
+			System.out.println("Delete successful!");
+		}
+		else
+		{
+			System.out.println("Fail to delete !");
+		}
 		
 	}
 	
-	public void deleteForFriendList(Adult adult)
+	public void deleteRelevantPerson(Person tempPerson)
 	{
-//		Person friend;
-//		for(int i =0; i<adult.getFriendsList().size();i++)
-//		{
-//			friend = adult.getFriendsList().get(i);	
-//			((Adult)friend).getFriendsList().remove(adult);
-//			
-//		}
+		for(int i = 0 ; i<tempPerson.getRelationship().size();i++) {
 		
+			//int index;
+			ArrayList<RelationshipStore> friendsRelation;
+			
+			
+		
+			if(tempPerson.getRelationship().get(i).getRelationType().equals("Child"))
+			{
+				deleteRelevantPerson(tempPerson.getRelationship().get(i).getRelevantPerson());
+				System.out.print(tempPerson.getRelationship().get(i).getRelationType()+"   "+tempPerson.getRelationship().get(i).getRelevantPerson().getName());
+			}
+			
+			friendsRelation = tempPerson.getRelationship().get(i).getRelevantPerson().getRelationship();
+			for(int j= 0 ;j<friendsRelation.size();j++)
+			{
+				if(friendsRelation.get(j).getRelevantPerson().equals(tempPerson));
+					friendsRelation.remove(j);
+				
+			}	
+
+		}
+
 		
 	}
 	
@@ -525,7 +591,7 @@ public class MiniNet {
 	
 	public void runProfile() {
 		
-		testData();
+		//testData();
 		while (!isExit) {
 			mainMenu();
 			switch (selectMenuNum) {
@@ -557,13 +623,22 @@ public class MiniNet {
 		Person BB = new Adult("BB",28,"N","OO");
 		Person CC = new Adult("CC",18,"Y","XX");
 		Person DD = new Adult("DD",30,"Y","TT");
+		Person child = new Children("child",12,"N","LOL");
+		
+		
 		((Adult)AA).addFriend(BB);
 		((Adult)AA).addFriend(DD);
 		((Adult)CC).addFriend(DD);
+		((Children)child).addParent(AA);
+		((Children)child).addParent(BB);
+		
+		
 		member.add(AA);
 		member.add(BB);
 		member.add(CC);
 		member.add(DD);
+		
+		System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
 	}
 
 }

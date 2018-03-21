@@ -39,15 +39,21 @@ public class Adult extends Person implements FriendRelation{
 	}
 
 	@Override
-	public boolean addFriend(Person seletedPerson) {
+	public boolean addFriend(Person selectedPerson) {
 		// TODO Auto-generated method stub
 		
-		RelationshipStore friendRelation = new RelationshipStore();
-		friendRelation.setRelationType("Friend");
-		friendRelation.setRelevantPerson(seletedPerson);
-		super.addRelationship(friendRelation);
-		friendRelation.setRelevantPerson(this);
-		seletedPerson.addRelationship(friendRelation);
+		RelationshipStore friendRelation1 = new RelationshipStore();//for own relationship
+		RelationshipStore friendRelation2 = new RelationshipStore();//for friend' relationship
+		
+		friendRelation1.setRelationType("Friend");
+		friendRelation2.setRelationType("Friend");
+		
+		friendRelation1.setRelevantPerson(selectedPerson);
+		this.addRelationship(friendRelation1);
+		
+		friendRelation2.setRelevantPerson((Person)this);
+		selectedPerson.addRelationship(friendRelation2);
+		
 		return true;
 
 		
@@ -56,7 +62,7 @@ public class Adult extends Person implements FriendRelation{
 	@Override
 	public void removeFriend(Person seletedPerson) {
 		// TODO Auto-generated method stub
-		super.getRelationship().remove(seletedPerson);
+		this.getRelationship().remove(seletedPerson);
 	}
 	
 	public void addChildren(Person seletedPerson)
@@ -64,16 +70,16 @@ public class Adult extends Person implements FriendRelation{
 		RelationshipStore friendRelation = new RelationshipStore();
 		friendRelation.setRelationType("Child");
 		friendRelation.setRelevantPerson(seletedPerson);
-		super.addRelationship(friendRelation);
+		this.addRelationship(friendRelation);
 	}
 
 
 	@Override
 	public boolean isFriend(Person seletedPerson) {
 		// TODO Auto-generated method stub
-		for(int i=0; i < super.getRelationship().size();i++ ) {
-			if(super.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
-				if(super.getRelationship().get(i).getRelationType().equals("Friend"))
+		for(int i=0; i < this.getRelationship().size();i++ ) {
+			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
+				if(this.getRelationship().get(i).getRelationType().equals("Friend"))
 					return true;
 			}
 		}
@@ -83,73 +89,28 @@ public class Adult extends Person implements FriendRelation{
 	private void displayRelationship()
 	{
 		System.out.print("Frinds: ");
-		for(int i =0;i<super.getRelationship().size();i++) {
-			if(super.getRelationship().get(i).getRelationType().equals("Friend"))
-			System.out.print(super.getRelationship().get(i).getRelevantPerson().getName()+" ");
+		for(int i =0;i<this.getRelationship().size();i++) {
+			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
+			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
 		}
 		System.out.println("");	
+		
+		System.out.print("Couple: ");
+		
+		for(int i =0;i<this.getRelationship().size();i++) {
+			if(this.getRelationship().get(i).getRelationType().equals("Couple"))
+			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
+		}
+		System.out.println("");
 		System.out.print("Children: ");
 		
-		for(int i =0;i<super.getRelationship().size();i++) {
-			if(super.getRelationship().get(i).getRelationType().equals("Child"))
-			System.out.print(super.getRelationship().get(i).getRelevantPerson().getName()+" ");
+		for(int i =0;i<this.getRelationship().size();i++) {
+			if(this.getRelationship().get(i).getRelationType().equals("Child"))
+			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
 		}
 		System.out.println("");
 	}
 	
-//	public ArrayList<Person> getFriendsList() {
-//
-//		return friendList;
-//		
-//	}
-	
-//	public boolean addFriends(Person pr) {
-//		
-//		friendList.add(pr);	
-//		((Adult)pr).friendList.add(this);	
-//		return true;		
-//		
-//	}
-//	
-//	public void displayFriendsList()
-//	{
-//		System.out.print("Frinds: ");
-//		for(int i =0;i<friendList.size();i++)
-//			System.out.print(friendList.get(i).getName()+" ");
-//		System.out.println("");		
-//	}
-//	
-//	
-//	
-
-//	
-//	
-//	
-
-//	
-//	public void displayChildrenList()
-//	{
-//		System.out.print("Children: ");
-//		for(int i = 0; i<childrenList.size();i++)
-//		{
-//			System.out.print(childrenList.get(i).getName()+" ");
-//		}
-//		System.out.println("");
-//	}
-//	
-//	
-//	public void setParents(Person[] parents) {
-//		this.parents = parents;
-//	}
-//
-//	public Person[] getParents() {
-//
-//		return parents;
-//	}
-//
-//	public void displayParents() {
-//		System.out.println("Parents: " + getParents()[0].getName() + " " + getParents()[1].getName());
-//	}
 
 	
 }

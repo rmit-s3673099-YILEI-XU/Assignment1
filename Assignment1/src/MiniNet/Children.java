@@ -10,9 +10,6 @@ import java.util.ArrayList;
  *
  */
 public class Children extends Person implements FriendRelation,ParentRelation{
-//	private ArrayList<Person> friends = new ArrayList();
-//	private Person parents[]= new Person[2];
-	
 	
 	public Children() {
 
@@ -26,24 +23,7 @@ public class Children extends Person implements FriendRelation,ParentRelation{
         super(name,age,pic,status);
         
         }
-	/**
-	 * @return the parents
-	 */
-//	public Person[] getParents() {
-//		return parents;
-//	}
-//	/**
-//	 * @param parents the parents to set
-//	 */
-//	public void setParents(Person[] parents) {
-//		this.parents = parents;
-//	}
-//	
-//	public void displayParents()
-//	{
-//		System.out.println("Parents: "+getParents()[0].getName()+" "+getParents()[1].getName());
-//	}
-//	
+
 	@Override
 	public void displayProfile() {
 		// TODO Auto-generated method stub
@@ -75,26 +55,49 @@ public class Children extends Person implements FriendRelation,ParentRelation{
 	}
 
 	@Override
-	public boolean addFriend(Person seletedPerson) {
+	public boolean addFriend(Person selectedPerson) {
 		// TODO Auto-generated method stub
 		
-		RelationshipStore friendRelation = new RelationshipStore();
-		friendRelation.setRelationType("Friend");
+		RelationshipStore friendRelation1 = new RelationshipStore();//for own relationship
+		RelationshipStore friendRelation2 = new RelationshipStore();//for friend' relationship
+		Person parent = new Adult();
+		boolean isInSameFam = false;
 		
-		int ageGap = Math.abs(this.getAge() - seletedPerson.getAge());
+		friendRelation1.setRelationType("Friend");
+		friendRelation2.setRelationType("Friend");
+		
+		int ageGap = Math.abs(this.getAge() - selectedPerson.getAge());
 
-		if (super.getRelationship().get(super.getRelationship().indexOf("Parent")).getRelevantPerson().equals(
-				seletedPerson.getRelationship().get(seletedPerson.getRelationship().indexOf("Parent")).getRelevantPerson())) {
-			System.out.println("They are in same family, they cannot be friends.");
+		for(int i =0;i<this.getRelationship().size();i++)
+		{
+			if(this.getRelationship().get(i).getRelationType().equals("Parent")) {
+				parent= this.getRelationship().get(i).getRelevantPerson();
+			}
+			System.out.println(parent.getName());
+		}
+		for(int i =0;i<selectedPerson.getRelationship().size();i++)
+		{
+			if(selectedPerson.getRelationship().get(i).getRelationType().equals("Parent")&&
+					selectedPerson.getRelationship().get(i).getRelevantPerson().equals(parent)) {
+				isInSameFam=true;
+				break;
+				
+			}
+		}
+		
+		if (isInSameFam) {
+			System.out.println("They are in same family, they cannot be friends. Please input again.\n Or you can input 'back' to give up add freiends.");
 			return false;
 
 		} else {
 
 			if (ageGap <= 3) {
-				friendRelation.setRelevantPerson(seletedPerson);
-				super.addRelationship(friendRelation);
-				friendRelation.setRelevantPerson(this);
-				((Children) seletedPerson).addRelationship(friendRelation);
+				
+				friendRelation1.setRelevantPerson(selectedPerson);
+				this.addRelationship(friendRelation1);
+				
+				friendRelation2.setRelevantPerson((Person)this);
+				selectedPerson.addRelationship(friendRelation2);
 				return true;
 			} else {
 				System.out.println("Gap is too big, they cannot be friends.");
@@ -119,10 +122,54 @@ public class Children extends Person implements FriendRelation,ParentRelation{
 	@Override
 	public void addParent(Person seletedPerson) {
 		// TODO Auto-generated method stub
-		RelationshipStore friendRelation = new RelationshipStore();
-		friendRelation.setRelationType("Parent");
-		friendRelation.setRelevantPerson(seletedPerson);
-		super.addRelationship(friendRelation);
+		RelationshipStore parentRelation = new RelationshipStore();
+		parentRelation.setRelationType("Parent");
+		parentRelation.setRelevantPerson(seletedPerson);
+		this.addRelationship(parentRelation);
+	}
+	
+	public void addParent(Person parent1, Person parent2) {
+		// TODO Auto-generated method stub
+		RelationshipStore parentRelation1 = new RelationshipStore();
+		RelationshipStore parentRelation2 = new RelationshipStore();
+		
+		RelationshipStore childRelation1 = new RelationshipStore();
+		RelationshipStore childRelation2 = new RelationshipStore();
+		
+		parentRelation1.setRelationType("Parent");
+		parentRelation1.setRelevantPerson(parent1);
+		this.addRelationship(parentRelation1);
+		
+		parentRelation2.setRelationType("Parent");
+		parentRelation2.setRelevantPerson(parent2);
+		this.addRelationship(parentRelation2);
+		
+		
+		
+		
+		
+		for(int i =0;i<parent1.getRelationship().size();i++)
+		{
+			if(parent1.getRelationship().get(i).getRelevantPerson().equals(parent2)) {
+				parent1.getRelationship().get(i).setRelationType("Couple");
+			}
+		}
+		for(int i =0;i<parent2.getRelationship().size();i++)
+		{
+			if(parent2.getRelationship().get(i).getRelevantPerson().equals(parent1)) {
+				parent2.getRelationship().get(i).setRelationType("Couple");
+			}
+		}
+		
+		childRelation1.setRelationType("Child");
+		childRelation1.setRelevantPerson(this);
+		//System.out.println(childRelation1.getRelevantPerson());
+		parent1.addRelationship(childRelation1);
+		
+		childRelation2.setRelationType("Child");
+		childRelation2.setRelevantPerson(this);
+		parent2.addRelationship(childRelation2);
+//		
 	}
 	
 //	@Override
