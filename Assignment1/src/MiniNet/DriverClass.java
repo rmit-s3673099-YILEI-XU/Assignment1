@@ -617,8 +617,9 @@ public class DriverClass {
         if(isInList(friendName)) {
         		if(selectedPerson instanceof Adult) {
         			if(((Adult)selectedPerson).isFriend(getPerson(friendName))) {
-        				selectedPerson.getRelationship().remove(getPerson(friendName));
-        				getPerson(friendName).getRelationship().remove(selectedPerson);
+        				
+        				((Adult)selectedPerson).removeFriend(getPerson(friendName));
+        				
         				System.out.println("Remove friend successful");
         				isRemoved = true;
         			}else {
@@ -627,8 +628,9 @@ public class DriverClass {
         			}
         		}else if(selectedPerson instanceof Children) {
         			if(((Children)selectedPerson).isFriend(getPerson(friendName))) {
-        				selectedPerson.getRelationship().remove(getPerson(friendName));
-        				getPerson(friendName).getRelationship().remove(selectedPerson);
+        				
+        				((Children)selectedPerson).removeFriend(getPerson(friendName));
+        				
         				System.out.println("Remove friend successful");
         				isRemoved = true;
         			}else {

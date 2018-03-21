@@ -60,11 +60,16 @@ public class Adult extends Person implements FriendRelation{
 	}
 
 	@Override
-	public void removeFriend(Person seletedPerson) {
-		// TODO Auto-generated method stub
-		this.getRelationship().remove(seletedPerson);
-	}
-	
+	public boolean removeFriend(Person seletedPerson) {
+		
+		  if(this.getRelationByPerson(seletedPerson).getRelationType().equals("Friend"))
+		  {
+		  this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
+		  return true;
+		  }
+		  return false;
+		  
+		 }
 	public void addChildren(Person seletedPerson)
 	{
 		RelationshipStore friendRelation = new RelationshipStore();

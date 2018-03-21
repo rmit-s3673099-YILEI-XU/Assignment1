@@ -108,10 +108,16 @@ public class Children extends Person implements FriendRelation,ParentRelation{
 	}
 
 	@Override
-	public void removeFriend(Person seletedPerson) {
-		// TODO Auto-generated method stub
+	public boolean removeFriend(Person seletedPerson) {
 		
-	}
+		  if(this.getRelationByPerson(seletedPerson).getRelationType().equals("Friend"))
+		  {
+		  this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
+		  return true;
+		  }
+		  return false;
+		  
+		 }
 
 
 	public boolean isFriend(Person seletedPerson) {

@@ -40,8 +40,17 @@ public abstract class Person {
 	public ArrayList<RelationshipStore> getRelationship() {
 		return relationship;
 	}
-
-
+	
+	public RelationshipStore getRelationByPerson(Person ps)
+	 {
+	  RelationshipStore tempRelation = new RelationshipStore();
+	  for(int i=0;i<relationship.size();i++)
+	  {
+	   if(relationship.get(i).getRelevantPerson().equals(ps))
+	    tempRelation=relationship.get(i);
+	  }
+	  return tempRelation;
+	 }
 
 	public Person() {};
 	/**
