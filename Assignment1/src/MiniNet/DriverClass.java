@@ -186,22 +186,38 @@ public class DriverClass {
 		while(!isAddFriend) {
 			
 			while (!isInList(frName)) {
-				System.out.println(frName + " is not in system list. Please input again. ");
+				System.out.println(frName + " is not in system list.Please input again");
 				frName = sr.nextLine();
 			}
 			friend = getPerson(frName);
-			if (friend instanceof Adult) {
-				((Adult) pr).addFriend(friend);
-				isAddFriend= true;
+			if(!frName.equals(pr.getName())) {
+				if(!((Adult)pr).isFriend(friend)) {
+					if (friend instanceof Adult ) {
+						((Adult) pr).addFriend(friend);
+						isAddFriend= true;
+						System.out.println("Add Friend successful!");
+						}else{
+							System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
+							isAddFriend = false;
+						}
+				}else {
+					
+					System.out.println(frName + " is already his/her friends. Please input again. ");
+					isAddFriend = false;
+				}
+				
+			}else {
+				System.out.println(frName + " is the person himself/herself.Please input again");
+				isAddFriend = false;
+				break;
 			}
-			else {
-				System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
+		
+			}
+				System.out.println("Please input friend name: ");
 				frName = sr.nextLine();
 			}
-		}
-		System.out.println("Add Friend successful!");
-
-	}
+		
+	
 	private void addChildrenFriendsProcess(Person pr)
 	{
 		Scanner sr = new Scanner(System.in);
@@ -452,20 +468,20 @@ public class DriverClass {
 	}
 	
     //@Emma
-    public void updateProfile(Person selectedPerson)
-    {
-        
-    		Scanner sr = new Scanner(System.in);
+	public void updateProfile(Person selectedPerson) {
+
+        Scanner sr = new Scanner(System.in);
 
         do {
-            System.out.print(
-                    "select what do you want to update"+
-                            "===================================\n"+
-                            "1. Name\n" +
-                            "2. Age\n" +
-                            "3. Pic\n" +
-                            "4. Status\n" +
-                            "5. Exit\n");
+            System.out.print("select what do you want to update" +
+                    "===================================\n" +
+                    "1. Name\n"+
+                    "2. Age\n" +
+                    "3. Pic\n" +
+                    "4. Status\n" +
+                    "5. Add Friends\n" +
+                    "6. Remove Friends\n" +
+                    "7. Exit\n" );
 
             try {
 
@@ -478,69 +494,128 @@ public class DriverClass {
                 break;
             }
 
-            if(updateNum<1||updateNum>5)
+            if (updateNum < 1 || updateNum > 7)
                 System.out.println("Please input a number from menu number.\n");
 
+        } while (updateNum < 1 || updateNum > 6);
+
+        updateSelection(updateNum,selectedPerson);
+
+    }
+
+    public void updateSelection(int updateNum, Person selectedPerson) {
+
+        Scanner sr = new Scanner(System.in);
+
+        switch (updateNum) {
+
+            case 1:
+                String prName;
+                System.out.println("Please input Person Name:");
+                prName = sr.nextLine();
+                updateName(prName, selectedPerson);
+                break;
+
+            case 2:
+                int prAge;
+                do{
+                    System.out.println("Please input Person Age:");
+
+                    try {
+                        prAge = sr.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Please input a number.");
+                        prAge = sr.nextInt();
+                    }
+
+                }while(!updateAge(prAge, selectedPerson));
+
+                break;
+            case 3:
+                System.out.println("Do you want to change the pic? Y/N");
+                if (sr.nextLine().contentEquals("Y")) {
+                    String prPic = sr.nextLine();
+                    System.out.println("Update successful!");
+                }
+                break;
+            case 4:
+                System.out.println("Please input your new status. If there is no status, please input none.");
+                String prStatus = sr.nextLine();
+                System.out.println("Update successful!");
+                break;
+            case 5:
+                updateAddFriends(selectedPerson);
+                break;
+            case 6:
+                updateRemoveFriends(selectedPerson);
+                break;
+
+            default:
+                System.out.println("Please input a number from menu number.\n");
+                break;
+
         }
-        while(updateNum<1 || updateNum>4);
-        
-        updateSelection(updateNum);
-        
     }
-    
-    public void updateSelection(int num) {
-    
-    	Scanner sr = new Scanner(System.in);
-		
-    	switch (updateNum) {
 
-		case 1:
-			System.out.println("Please input Person Name:");
-			String prName = sr.nextLine();
-			selectedPerson.setName(prName);
-			System.out.println("Update successful!");
-			break;
-		case 2:
-			System.out.println("Please input Person Age:");
-			int prAge = sr.nextInt();
-			selectedPerson.setAge(prAge);
-			if (prAge >= 18) {
-				member.add(new Adult(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
-						selectedPerson.getStatus()));
-			
-			} else if (prAge > 2) {
-				member.add(new Children(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),
-						selectedPerson.getStatus()));
-				
-			}else 
-				member.add(new Baby(selectedPerson.getName(), selectedPerson.getAge(), selectedPerson.getPic(),selectedPerson.getStatus()));
-            
-			member.remove(selectedPerson);
-			if(selectedPerson instanceof Baby) {
-				System.out.print("baby");
-			}
-			System.out.println("Update successful!");
-			break;
-		case 3:
-			System.out.println("Do you want to change the pic? Y/N");
-			String prPic = sr.nextLine();
-			System.out.println("Update successful!");
-			break;
-		case 4:
-			System.out.println("Please input new status. If there is no status, please input none.");
-			String prStatus = sr.nextLine();
-			System.out.println("Update successful!");
-		case 5:
-			
-			break;
+    public boolean updateName(String prName, Person selectedPerson) {
+        if(isInList(prName)){
+            System.out.println("Name already exist, update fail!");
+            return false;
+        }else {
+            selectedPerson.setName(prName);
+            System.out.println("Update successful!");
+            return true;
+        }
 
-		default:
-			System.out.println("Please input a number from menu number.\n");
-			break;
-
-		}
     }
- 
+    public boolean updateAge(int prAge, Person selectedPerson) {
+
+        if (selectedPerson instanceof Adult && !(prAge>=16)) {
+
+            System.out.println("Update Fail. Please input the age range in the person type");
+            return false;
+        } else if (selectedPerson instanceof Children && !(prAge < 16 && prAge > 2)) {
+            System.out.println("Update fail. Please input the age range in the person type");
+            return false;
+        } else if (selectedPerson instanceof Baby && !(prAge <= 2)) {
+            System.out.println("Update Fail. Please input the age range in the person type");
+            return false;
+        } else {
+            selectedPerson.setAge(prAge);
+            System.out.println("Update successful!");
+            return true;
+        }
+
+    }
+
+    public void updateAddFriends(Person selectedPerson ) {
+
+        if(selectedPerson instanceof Adult) {
+            addAdultFriendsProcess(selectedPerson);
+            System.out.println("Update successful!");
+        }else if(selectedPerson instanceof Children){
+            addChildrenFriendsProcess(selectedPerson);
+            System.out.println("Update successful!");
+        }else
+            System.out.println("Update fail! Baby cannot have friends");
+    }
+
+    public void updateRemoveFriends(Person selectedPerson) {
+        String friendName;
+        System.out.print("Please input the friend you want to remove");
+        Scanner sr = new Scanner(System.in);
+        friendName = sr.nextLine();
+        if(selectedPerson instanceof Adult) {
+            ((Adult)selectedPerson).removeFriend(getPerson(friendName));
+            System.out.println("Update successful! You removed " + friendName);
+        }else if(selectedPerson instanceof Children){
+            ((Children)selectedPerson).removeFriend(getPerson(friendName));
+            System.out.println("Update successful!You removed " + friendName);
+        }else
+            System.out.println("Update fail!");
+
+    }
+
 
 	
 	public boolean deletePerson(Person selectedPerson) {
