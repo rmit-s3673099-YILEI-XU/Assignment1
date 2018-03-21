@@ -571,7 +571,7 @@ public class MiniNet {
 			if(tempPerson.getRelationship().get(i).getRelationType().equals("Child"))
 			{
 				deleteRelevantPerson(tempPerson.getRelationship().get(i).getRelevantPerson());
-				System.out.print(tempPerson.getRelationship().get(i).getRelationType()+"   "+tempPerson.getRelationship().get(i).getRelevantPerson().getName());
+			//	System.out.print(tempPerson.getRelationship().get(i).getRelationType()+"   "+tempPerson.getRelationship().get(i).getRelevantPerson().getName());
 			}
 			
 			friendsRelation = tempPerson.getRelationship().get(i).getRelevantPerson().getRelationship();
