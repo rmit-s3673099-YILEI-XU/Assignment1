@@ -13,6 +13,7 @@ public class RelationshipStore {
 
 	private Person relevantPerson;
 	private String relationType;
+	
 	/**
 	 * @return the relevantPerson
 	 */
