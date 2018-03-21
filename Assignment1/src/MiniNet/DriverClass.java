@@ -612,7 +612,7 @@ public class DriverClass {
 	
 	public void runProfile() {
 		
-		//testData();
+//		testData();
 		while (!isExit) {
 			mainMenu();
 			switch (selectMenuNum) {

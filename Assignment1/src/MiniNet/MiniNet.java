@@ -9,9 +9,6 @@ package MiniNet;
  */
 public class MiniNet {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -41,7 +38,8 @@ public class MiniNet {
 		System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
 
 		pc.runProfile();
-		
 	}
+	
+
 
 }

@@ -88,7 +88,7 @@ public class Adult extends Person implements FriendRelation{
 	
 	private void displayRelationship()
 	{
-		System.out.print("Frinds: ");
+		System.out.print("Friends: ");
 		for(int i =0;i<this.getRelationship().size();i++) {
 			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
 			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
