@@ -49,6 +49,7 @@ public class Adult extends Person implements FriendRelation{
 
 	/**
 	 * This method adds friend to the person's relationship list, and also add the person to the friend's relationship list
+	 * @param selectedPerson this is the person who is going to be added into the friend list
 	 */
 	public boolean addFriend(Person selectedPerson) {
 		
@@ -69,6 +70,7 @@ public class Adult extends Person implements FriendRelation{
 
 	/**
 	 * This method remove the friend from the person's relationship list
+	 * @param selectedPerson this is the person who is going to be removed from the friend list
 	 */
 	public boolean removeFriend(Person seletedPerson) {
 		
@@ -79,6 +81,7 @@ public class Adult extends Person implements FriendRelation{
 
 	/**
 	 * This method check if the selected person is this person's friend
+	 * @param  seletedPerson this is the person who is be tested if it is in the friend list 
 	 */
 	public boolean isFriend(Person seletedPerson) {
 		
@@ -93,7 +96,7 @@ public class Adult extends Person implements FriendRelation{
 
 	/**
 	 * This method add child to the parents
-	 * @param seletedPerson
+	 * @param seletedPerson this is the child who is going to be added 
 	 */
 	public void addChildren(Person seletedPerson)
 	{
