@@ -35,7 +35,8 @@ public class MiniNet {
 		pc.getMember().add(child);
 		
 		
-		System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
+		//System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
+
 
 		pc.runProfile();
 	}

@@ -11,10 +11,7 @@ import java.util.ArrayList;
  */
 public class Adult extends Person implements FriendRelation{
 	
-//	private ArrayList<Person> friendList = new ArrayList(); 
-//	private ArrayList<Person> childrenList = new ArrayList(); 
-//	
-//	private Person[] parents = new Person[2];
+
 	
 	public Adult()
 	{
@@ -69,13 +66,6 @@ public class Adult extends Person implements FriendRelation{
 		  }
 		  return false;
 		  
-		 }
-	public void addChildren(Person seletedPerson)
-	{
-		RelationshipStore friendRelation = new RelationshipStore();
-		friendRelation.setRelationType("Child");
-		friendRelation.setRelevantPerson(seletedPerson);
-		this.addRelationship(friendRelation);
 	}
 
 
@@ -91,16 +81,17 @@ public class Adult extends Person implements FriendRelation{
 		return false;
 	}
 	
-	public boolean isInRelationship(Person seletedPerson) {
-		// TODO Auto-generated method stub
-		for(int i=0; i < this.getRelationship().size();i++ ) {
-			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
-				
-					return true;
-			}
-		}
-		return false;
+	
+	
+	public void addChildren(Person seletedPerson)
+	{
+		RelationshipStore friendRelation = new RelationshipStore();
+		friendRelation.setRelationType("Child");
+		friendRelation.setRelevantPerson(seletedPerson);
+		this.addRelationship(friendRelation);
 	}
+	
+	
 	private void displayRelationship()
 	{
 		System.out.print("Friends: ");

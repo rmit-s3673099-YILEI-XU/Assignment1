@@ -66,84 +66,95 @@ public class DriverClass {
 	}
 
 
-	private void addPerson()
-	{
-		Person pr,friend;
-		Adult parent;
-		String prName, prPic, prStatus, frName;
+	private void addPerson() {
+		Person pr, tempPerson;
+
+		// Adult parent;
+		String prName, prPic, prStatus;
 		int prAge;
-		
-		
-		
-		//more details @Emma
+
+		// more details @Emma
 		Scanner sr = new Scanner(System.in);
 		System.out.println("Please input Person Name:");
 		prName = sr.nextLine();
 		System.out.println("Please input Person Age:");
 		prAge = sr.nextInt();
-		sr.nextLine();		
+		sr.nextLine();
 		System.out.println("Do you want to set a pic? Y/N");
-		prPic= sr.nextLine();
+		prPic = sr.nextLine();
 		System.out.println("Please input Person status. If there is no status, please input none.");
-		prStatus= sr.nextLine();
-		
-		
-		//System.out.println(prName+" "+prAge+" "+ prPic+" "+prStatus+" ");
-		
-		if(prAge>=16)
+		prStatus = sr.nextLine();
+
+		if (prAge >= 16)
 			pr = new Adult();
-		else if(prAge>2)
+		else if (prAge > 2)
 			pr = new Children();
-		else 
-			pr = new Baby();		
+		else
+			pr = new Baby();
 		pr.setName(prName);
 		pr.setAge(prAge);
 		pr.setPic(prPic);
 		pr.setStatus(prStatus);
-		
-		member.add(pr);
-		
-		System.out.println("Add person successful!");
-		
+
 		if (pr instanceof Adult) {
-			
-			/*addFriends*/
+
+			member.add(pr);
+			System.out.println("Add person successful!");
+			/* addFriends */
 			System.out.println("Do you want to add friend? Y/N");
 			// more details @Emma
 			if (sr.nextLine().contentEquals("Y")) {
-				addAdultFriendsProcess(pr);
+				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+				if (tempPerson != null) {
 				
-			}
-			/*addParents*/
-			System.out.println("Do you want to add parents? Y/N");
-
-			if(sr.nextLine().contentEquals("Y")){
-
-				addParentsProcess(pr);
-
-
-			}
-		}
-		else if(pr instanceof Children)
-		{
-			addParentsProcess(pr);
-			/*addFriends*/
-			System.out.println("Do you want to add friends? Y/N");
-			if (sr.nextLine().contentEquals("Y")) {
-				addChildrenFriendsProcess(pr);
+					((Adult) pr).addFriend(tempPerson);
+					System.out.println("Add Friend successful!");
+				}
 			
-			}
-		
-		}
-			
-		else/* it is Baby*/{
 				
-				addParentsProcess(pr);
+
 			}
-			
+
+		} else if (pr instanceof Children) {
+
+			if (addParentsProcess1(pr)) {
+
+				System.out.println("Add person successful!");
+				/* addFriends */
+				System.out.println("Do you want to add friends? Y/N");
+				if (sr.nextLine().contentEquals("Y")) {
+					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+					if (tempPerson != null) {
+						if(((Children) pr).addFriend(tempPerson))
+						System.out.println("Add Friend successful!");
+						else {
+							tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+						}
+					}
+
+				}
+
+			} else {
+				System.out.println("Fail add person!");
+			}
+
 		}
+
+		else/* it is Baby */ {
+
+			if (addParentsProcess1(pr)) {
+
+				System.out.println("Add person successful!");
+
+			} else {
+				System.out.println("Fail add person!");
+			}
+
+		}
+
+	}
+
 	
-
 	private void listEveryone()
 	{
 		for(int i =0;i<member.size();i++)
@@ -174,93 +185,130 @@ public class DriverClass {
 		
 	}
 	
-	private void addAdultFriendsProcess(Person pr) {
-		Scanner sr = new Scanner(System.in);
-		String frName;
-		Person friend;
-		boolean isAddFriend = false;
-		System.out.println("Please input friend name: ");
-		frName = sr.nextLine();
-		
-		/* addFriends */
-		while (!isAddFriend) {
-
-			while (!isInList(frName)) {
-				System.out.println(frName + " is not in system list.Please input again");
-				frName = sr.nextLine();
+	private ArrayList<Person> getPersonListByType(Person tempPerson, String action)
+	{
+		ArrayList<Person> tempPersonList = new ArrayList();
+		if(tempPerson instanceof Adult)
+		{
+			for(int i =0;i<member.size();i++)
+			{
+				if(member.get(i) instanceof Adult) {
+					if(!member.get(i).equals(tempPerson))
+						tempPersonList.add(member.get(i));
+				}
 			}
-			friend = getPerson(frName);
-
-			if (!frName.equals(pr.getName())) {
-				if (!((Adult) pr).isInRelationship(friend)) {
-					if (friend instanceof Adult) {
-						((Adult) pr).addFriend(friend);
-						isAddFriend = true;
-						
-					} else {
-						System.out.println(frName + " is not Adult. They can't make friends. Please input again. ");
-						frName = sr.nextLine();
-			
+		}
+		else 
+		{
+			for(int i =0;i<member.size();i++)
+			{
+				if(action.equals("Parent")) {
+					if(member.get(i) instanceof Adult) {
+						tempPersonList.add(member.get(i));
+						}
 					}
-				} else {
-
-					System.out.println(frName + " already has relationship with "+ pr.getName()+" . Please input again. ");
-					frName = sr.nextLine();
+				else if(action.equals("Friend"))
+				{
+					if(member.get(i) instanceof Children) {
+						if(!member.get(i).equals(tempPerson))
+							tempPersonList.add(member.get(i));
+						}
 				}
-
-			} else {
-				System.out.println(frName + " is the person himself/herself.Please input again");
-				frName = sr.nextLine();
 			}
-
 		}
-		System.out.println("Add Friend successful!");
-		
+		return tempPersonList;
 	}
-		
 	
-	private void addChildrenFriendsProcess(Person pr) {
+	private Person getRelationPerson(ArrayList<Person> tempPersonList)
+	{
+		Person tempPerson;
+		int selectedPersonNum=0;
+		do {
+		for(int i =0;i<tempPersonList.size();i++)
+		{
+			
+			System.out.println(i+1+". "+tempPersonList.get(i).getName());
+		}
+		System.out.println(tempPersonList.size()+1+". Back");
+		System.out.println("Enter an option:");
+		
 		Scanner sr = new Scanner(System.in);
-		String frName;
-		Person friend;
-		boolean isAddFriend = false;
-		System.out.println("Please input friend name: ");
-		frName = sr.nextLine();
-	
-		while (!isAddFriend) {
-
-			while (!isInList(frName)) {
-				System.out.println(frName + " is not in system list.Please input again");
-				frName = sr.nextLine();
-			}
-			friend = getPerson(frName);
-
-		if (!frName.equals(pr.getName())) {
-			if (!((Children) pr).isInRelationship(friend)) {
-				if (friend instanceof Children) {
-					((Children)pr).addFriend(friend);
-					isAddFriend = true;
-					
-				} else {
-					System.out.println(frName + " is not Children. They can't make friends. Please input again. ");
-					frName = sr.nextLine();
-		
-				}
-			} else {
-
-				System.out.println(frName + " already has relationship with "+ pr.getName()+" . Please input again. ");
-				frName = sr.nextLine();
-			}
-
-		} else {
-			System.out.println(frName + " is the person himself/herself.Please input again");
-			frName = sr.nextLine();
+		try {
+			
+			selectedPersonNum = sr.nextInt();
+			
+		} catch (Exception e) {
+			System.out.println("Please input a number from menu number.");
+			selectPersonNum = 0;
+			
 		}
-
+		if(selectedPersonNum==tempPersonList.size()+1)
+			break;
+		}while(selectedPersonNum<1||selectedPersonNum>tempPersonList.size()+1);
+		
+		if(selectedPersonNum==tempPersonList.size()+1)
+			tempPerson=null;
+		else {
+		tempPerson=tempPersonList.get(selectedPersonNum-1);
+		}
+		
+		return tempPerson;
 	}
-	System.out.println("Add Friend successful!");
 	
-}
+	private boolean addParentsProcess1(Person pr) {
+		Person parent1 = new Adult();
+		Person parent2 = new Adult();
+		System.out.println("Parents list\n===================================");
+		parent1 = getRelationPerson(getPersonListByType(pr, "Parent"));
+		if (parent1 != null) {
+			//select couple automatically
+			for (int i = 0; i < parent1.getRelationship().size(); i++) {
+				if (parent1.getRelationship().get(i).getRelationType().equals("Couple")) {
+					parent2 = parent1.getRelationship().get(i).getRelevantPerson();
+					System.out.println(parent1.getName() + " " + parent2.getName() + " are couple in system.");
+					break;
+				} else {
+					parent2 = null;
+				}
+			}
+			if (parent2 == null) {
+				boolean getLegalParent = false;
+				while (!getLegalParent) {
+					parent2 = getRelationPerson(getPersonListByType(pr, "Parent"));
+					if (parent2 != null) {
+						if (!parent2.equals(parent1)) {
+							getLegalParent = true;
+							for (int i = 0; i < parent2.getRelationship().size(); i++) {
+								if (parent2.getRelationship().get(i).getRelationType().equals("Couple")) {
+									getLegalParent = false;
+									break;
+								}
+							}
+						}
+					} else {
+						getLegalParent = true;
+					}
+				}
+
+			}
+
+		}
+		if (parent1 != null && parent2 != null) {
+
+			if(pr instanceof Children) {
+				((Children) pr).addParent(parent1, parent2);
+			}
+			else
+			{
+				((Baby) pr).addParent(parent1, parent2);
+			}
+			member.add(pr);
+			return true;
+		} else
+			return false;
+	}
+	
+
 	
 	public void addParentsProcess(Person pr) {
 		Scanner sr = new Scanner(System.in);
@@ -475,9 +523,9 @@ public class DriverClass {
 	public void updateProfile(Person selectedPerson) {
 
         Scanner sr = new Scanner(System.in);
-
+      
         do {
-            System.out.print("select what do you want to update" +
+            System.out.print("select what do you want to update\n" +
                     "===================================\n" +
                     "1. Name\n"+
                     "2. Age\n" +
@@ -594,17 +642,38 @@ public class DriverClass {
 
     public void updateAddFriends(Person selectedPerson ) {
 
-        if(selectedPerson instanceof Adult) {
-            addAdultFriendsProcess(selectedPerson);
-            System.out.println("Update successful!");
-        }else if(selectedPerson instanceof Children){
-            addChildrenFriendsProcess(selectedPerson);
-            System.out.println("Update successful!");
-        }else
-            System.out.println("Update fail! Baby cannot have friends");
+    		Person tempPerson;
+    		
+    			if(selectedPerson instanceof Baby)
+    			{
+    				 System.out.println("Update fail! Baby cannot have friends");
+    			}
+    			else
+    			{
+    				tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
+    				if (tempPerson != null) {
+    					if (selectedPerson.isInRelationship(tempPerson)) {
+    						System.out.println("Fail to add friend, they already have relationship!");
+    						tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
+    					} else {
+    						if(selectedPerson instanceof Adult) {
+    						((Adult) selectedPerson).addFriend(tempPerson);
+    						}
+    						else
+    						{
+    							((Children) selectedPerson).addFriend(tempPerson);
+    						}
+    						System.out.println("Add Friend successful!");
+    						System.out.println("Update successful!");
+    					}
+    				}
+    			}
+
     }
 
     public void updateRemoveFriends(Person selectedPerson) {
+    	
+    		Person tempPerson;
         String friendName;
         boolean isRemoved = false;
         
@@ -736,6 +805,7 @@ public class DriverClass {
 				addPerson();
 				break;
 			case 5:
+				isExit = true;
 				break;
 			default:
 				break;			

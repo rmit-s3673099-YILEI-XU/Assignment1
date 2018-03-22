@@ -41,6 +41,7 @@ public abstract class Person {
 		return relationship;
 	}
 	
+	
 	public RelationshipStore getRelationByPerson(Person ps)
 	 {
 	  RelationshipStore tempRelation = new RelationshipStore();
@@ -51,6 +52,17 @@ public abstract class Person {
 	  }
 	  return tempRelation;
 	 }
+	
+	public boolean isInRelationship(Person seletedPerson) {
+		// TODO Auto-generated method stub
+		for(int i=0; i < this.getRelationship().size();i++ ) {
+			if(this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
+				
+					return true;
+			}
+		}
+		return false;
+	}
 
 	public Person() {};
 	/**

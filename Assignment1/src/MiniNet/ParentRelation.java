@@ -8,6 +8,7 @@ package MiniNet;
  *
  */
 public interface ParentRelation {
-	public void addParent(Person seletedPerson);
-	//public void removeFriend(Person seletedPerson);
+	public void addParent(Person seletedPerson);//hard data
+	public void addParent(Person parent1,Person parent2);//input data
+
 }
