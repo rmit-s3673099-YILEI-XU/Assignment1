@@ -321,7 +321,7 @@ public class DriverClass {
 	private boolean addParentsProcess(Person pr) {
 		Person parent1 = new Adult();
 		Person parent2 = new Adult();
-		//System.out.println("Select Person\n===================================");
+
 		parent1 = getRelationPerson(getPersonListByType(pr, "Parent"));
 		if (parent1 != null) {
 			//select couple automatically
@@ -628,7 +628,7 @@ public class DriverClass {
     		Person tempPerson;
     		boolean isGoBack= false;
     		
-    		//System.out.println("Select Person\n===================================");
+  
 		if (selectedPerson instanceof Baby) {
 			System.out.println("Update fail! Baby cannot have friends");
 		} else {
@@ -666,7 +666,7 @@ public class DriverClass {
     	
     		Person tempPerson;
     		
-    		System.out.println("Select Person\n===================================");
+    		
     		if(selectedPerson instanceof Baby)
     		{
     			 System.out.println("Update fail! Baby cannot have friends");
@@ -698,7 +698,7 @@ public class DriverClass {
 		Scanner sr = new Scanner(System.in);
 		RelationshipStore tempRelation;
 		
-		System.out.println("Are you sure to delete "+selectedPerson.getName() +" Y/N");
+		System.out.println("Are you sure to delete "+selectedPerson.getName() +" ？ Y/N");
 		if(sr.nextLine().equals("Y")) {
 		
 		for(int i = 0 ; i<selectedPerson.getRelationship().size();i++) {
