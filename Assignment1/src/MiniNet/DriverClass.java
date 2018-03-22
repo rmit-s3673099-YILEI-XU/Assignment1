@@ -80,7 +80,7 @@ public class DriverClass {
 			System.out.println("Do you want to add friend? Y/N");
 			flag=sr.nextLine().toUpperCase();
 			if (flag.equals("Y")) {
-				System.out.println("Select Person\n===================================");
+				
 				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
 				if (tempPerson != null) {
 					((Adult) pr).addFriend(tempPerson);
@@ -101,7 +101,7 @@ public class DriverClass {
 				System.out.println("Do you want to add friends? Y/N");
 				flag=sr.nextLine().toUpperCase();
 				if (flag.equals("Y")) {
-					System.out.println("Select Person\n===================================");
+			
 					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
 					if (tempPerson != null) {
 						if(((Children) pr).addFriend(tempPerson))
@@ -136,43 +136,16 @@ public class DriverClass {
 	}
 	
 	private Person inputBasicProfile() {
-		// Adult parent;
 		Person pr;
 		String prName, prPic, prStatus;
 		int prAge=-1;
-
-		// more details @Emma
 		Scanner sr = new Scanner(System.in);
-		System.out.println("Please input Person Name:");
-		do {
-		prName = sr.nextLine();
-		if(isInList(prName)||prName.isEmpty())
-		{
-			System.out.println("The person is already in system./The name cannot be empty.\nPlease input Person Name:");
-		}
-		
-		}while(isInList(prName)||prName.isEmpty());		
-		System.out.println("Please input Person Age:");
-		do {
-			try {
-				prAge = sr.nextInt();
-				sr.nextLine();
-			} catch (Exception e) {
-				//System.out.println("Please in put a number!");
-				sr.nextLine();
-				
-			}
-			if(prAge<0||prAge>200)
-			{
-				System.out.println("Please in put a legal number.");
-			}
-		}while(prAge<0||prAge>200);
-		
-		do {
-			System.out.println("Do you want to set a pic? Y/N");
-			prPic = sr.nextLine();
-		}while(!(prPic.toUpperCase().equals("Y")||prPic.toUpperCase().equals("N")));
-		System.out.println("Please input Person status. If there is no status, please input none.");
+
+		prName=inputName();
+		prAge=inputAge();
+		prPic=inputPic();
+
+		System.out.println("Please input Person status.(Can be empty.)");
 		prStatus = sr.nextLine();
 
 		if (prAge >= 16)
@@ -189,7 +162,56 @@ public class DriverClass {
 		
 		return pr;
 	}
+	private String inputName()
+	{
+		String prName;
+		Scanner sr = new Scanner(System.in);
+		System.out.println("Please input Person Name:");
+		do {
+		prName = sr.nextLine();
+		if(isInList(prName)||prName.isEmpty())
+		{
+			System.out.println("The person is already in system./The name cannot be empty.\nPlease input Person Name:");
+		}
+		
+		}while(isInList(prName)||prName.isEmpty());	
 	
+		return prName;
+	}
+	private int inputAge()
+	{
+		int prAge=-1;
+		Scanner sr = new Scanner(System.in);
+		
+		System.out.println("Please input Person Age:");
+		do {
+			try {
+				prAge = sr.nextInt();
+				//sr.nextLine();
+			} catch (Exception e) {
+				//System.out.println("Please in put a number!");
+				sr.nextLine();
+				
+			}
+			if(prAge<0||prAge>200)
+			{
+				System.out.println("Please in put a legal number.");
+			}
+		}while(prAge<0||prAge>200);
+		
+		return prAge;
+	}
+	private String inputPic()
+	{
+		String prPic;
+		Scanner sr = new Scanner(System.in);
+		do {
+			System.out.println("Do you want to set a pic? Y/N");
+			prPic = sr.nextLine();
+		}while(!(prPic.toUpperCase().equals("Y")||prPic.toUpperCase().equals("N")));
+		
+		return prPic;
+	}
 	private void listEveryone() {
 //		do {
 //			
@@ -264,6 +286,7 @@ public class DriverClass {
 		Person tempPerson;
 		int selectedPersonNum=0;
 		do {
+			System.out.println("Select Person\n===================================");
 		for(int i =0;i<tempPersonList.size();i++)
 		{
 			
@@ -298,7 +321,7 @@ public class DriverClass {
 	private boolean addParentsProcess(Person pr) {
 		Person parent1 = new Adult();
 		Person parent2 = new Adult();
-		System.out.println("Select Person\n===================================");
+		//System.out.println("Select Person\n===================================");
 		parent1 = getRelationPerson(getPersonListByType(pr, "Parent"));
 		if (parent1 != null) {
 			//select couple automatically
@@ -499,7 +522,7 @@ public class DriverClass {
                     "===================================\n" +
                     "1. Name\n"+
                     "2. Age\n" +
-                    "3. Pic\n" +
+                    "3. Picture\n" +
                     "4. Status\n" +
                     "5. Add Friends\n" +
                     "6. Remove Friends\n" +
@@ -538,35 +561,17 @@ public class DriverClass {
         switch (updateNum) {
 
             case 1:
-                String prName;
-                System.out.println("Please input Person Name:");
-                prName = sr.nextLine();
-                updateName(prName, selectedPerson);
+            		selectedPerson.setName(inputName());
+            		System.out.println("Update successful!");
+            		
                 break;
 
             case 2:
-                int prAge=-1;
-                do{
-                    System.out.println("Please input Person Age:");
-
-                    try {
-                        prAge = sr.nextInt();
-                        sr.nextLine();
-                    } catch (Exception e) {
-                        System.out.println("Please input a number.");
-                        sr.nextLine();
-                     
-                    }
-
-                }while(prAge<0||prAge>200);
-                updateAge(prAge, selectedPerson);
+                updateAge(inputAge(), selectedPerson);
                 break;
             case 3:
-                System.out.println("Do you want to change the pic? Y/N");
-                if (sr.nextLine().contentEquals("Y")) {
-                    String prPic = sr.nextLine();
-                    System.out.println("Update successful!");
-                }
+            		selectedPerson.setPic(inputPic());
+                System.out.println("Update successful!");
                 break;
             case 4:
                 System.out.println("Please input your new status. If there is no status, please input none.");
@@ -587,17 +592,17 @@ public class DriverClass {
         }
     }
 
-    public boolean updateName(String prName, Person selectedPerson) {
-        if(isInList(prName)){
-            System.out.println("Name already exist, update fail!");
-            return false;
-        }else {
-            selectedPerson.setName(prName);
-            System.out.println("Update successful!");
-            return true;
-        }
-
-    }
+//    public boolean updateName(String prName, Person selectedPerson) {
+//        if(isInList(prName)){
+//            System.out.println("Name already exist, update fail!");
+//            return false;
+//        }else {
+//            selectedPerson.setName(prName);
+//            System.out.println("Update successful!");
+//            return true;
+//        }
+//
+//    }
     public boolean updateAge(int prAge, Person selectedPerson) {
 
         if (selectedPerson instanceof Adult && !(prAge>=16)) {
@@ -621,37 +626,47 @@ public class DriverClass {
     public void updateAddFriends(Person selectedPerson ) {
 
     		Person tempPerson;
+    		boolean isGoBack= false;
     		
-    			if(selectedPerson instanceof Baby)
-    			{
-    				 System.out.println("Update fail! Baby cannot have friends");
-    			}
-    			else
-    			{
-    				tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
-    				if (tempPerson != null) {
-    					if (selectedPerson.isInRelationship(tempPerson)) {
-    						System.out.println("Fail to add friend, they already have relationship!");
-    						tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
-    					} else {
-    						if(selectedPerson instanceof Adult) {
-    						((Adult) selectedPerson).addFriend(tempPerson);
-    						}
-    						else
-    						{
-    							((Children) selectedPerson).addFriend(tempPerson);
-    						}
-    						System.out.println("Add Friend successful!");
-    						System.out.println("Update successful!");
-    					}
-    				}
-    			}
+    		//System.out.println("Select Person\n===================================");
+		if (selectedPerson instanceof Baby) {
+			System.out.println("Update fail! Baby cannot have friends");
+		} else {
+			while (!isGoBack) {
+				tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
+				
+
+				if (tempPerson != null) {
+					if (selectedPerson.isInRelationship(tempPerson)) {
+						System.out.println("Fail to add friend, they already have relationship!");
+
+					} else {
+
+						if (selectedPerson instanceof Adult) {
+							((Adult) selectedPerson).addFriend(tempPerson);
+							
+						} else {
+							((Children) selectedPerson).addFriend(tempPerson);
+						}
+						isGoBack=true;
+						System.out.println("Add Friend successful!");
+						System.out.println("Update successful!");
+					}
+				}else
+				{
+					isGoBack=true;
+				}
+			}
+			
+		}
 
     }
 
     public void updateRemoveFriends(Person selectedPerson) {
     	
     		Person tempPerson;
+    		
+    		System.out.println("Select Person\n===================================");
     		if(selectedPerson instanceof Baby)
     		{
     			 System.out.println("Update fail! Baby cannot have friends");
@@ -777,31 +792,8 @@ public class DriverClass {
 			}
 		}
 
-		System.out.println("good!");
+		System.out.println("Thank you for using MiniNet System!");
 	}
 	
-	private void testData()
-	{
-		Person AA = new Adult("AA",20,"Y","PP");
-		Person BB = new Adult("BB",28,"N","OO");
-		Person CC = new Adult("CC",18,"Y","XX");
-		Person DD = new Adult("DD",30,"Y","TT");
-		Person child = new Children("child",12,"N","LOL");
-		
-		
-		((Adult)AA).addFriend(BB);
-		((Adult)AA).addFriend(DD);
-		((Adult)CC).addFriend(DD);
-		((Children)child).addParent(AA);
-		((Children)child).addParent(BB);
-		
-		
-		member.add(AA);
-		member.add(BB);
-		member.add(CC);
-		member.add(DD);
-		
-		System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
-	}
 
 }

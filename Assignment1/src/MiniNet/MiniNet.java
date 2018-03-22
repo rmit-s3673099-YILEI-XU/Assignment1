@@ -4,7 +4,7 @@
 package MiniNet;
 
 /**
- * @author Yilei Xu
+ * @author CIFANG ZHANG
  *
  */
 public class MiniNet {
@@ -27,17 +27,12 @@ public class MiniNet {
 		((Children)child).addParent(AA,BB);
 		
 		
-		
 		pc.getMember().add(AA);
 		pc.getMember().add(BB);
 		pc.getMember().add(CC);
 		pc.getMember().add(DD);
 		pc.getMember().add(child);
 		
-		
-		//System.out.println("--------"+AA.getRelationship().get(1).getRelevantPerson().getName());
-
-
 		pc.runProfile();
 	}
 	

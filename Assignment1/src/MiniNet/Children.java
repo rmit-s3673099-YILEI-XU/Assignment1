@@ -6,7 +6,7 @@ package MiniNet;
 import java.util.ArrayList;
 
 /**
- * @author Yilei Xu
+ * @author CIFANG ZHANG
  *
  */
 public class Children extends Person implements FriendRelation, ParentRelation {

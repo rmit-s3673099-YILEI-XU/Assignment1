@@ -4,7 +4,7 @@
 package MiniNet;
 
 /**
- * @author Yilei Xu
+ * @author CIFANG ZHANG
  *
  */
 public class Baby extends Person implements ParentRelation{
