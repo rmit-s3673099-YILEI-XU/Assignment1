@@ -6,26 +6,39 @@ package MiniNet;
 import java.util.ArrayList;
 
 /**
+ * This class is the subclass of Person, it creates Children type Person
  * @author CIFANG ZHANG
  *
  */
 public class Children extends Person implements FriendRelation, ParentRelation {
 
+	/**
+	 * This is the constructor is for creating the Children object from the user
+	 */
 	public Children() {
 
 		super();
 
 	}
 
+	/**
+	 * This constructor is for creating the Children object in the main method, to store some people in the system
+	 * @param name the name of the person
+	 * @param age the age of the person
+	 * @param pic the picture of the person
+	 * @param status the status of the person
+	 */
 	public Children(String name, int age, String pic, String status) {
 
 		super(name, age, pic, status);
 
 	}
 
-	@Override
+	/**
+	 *  This method display the person's basic profile and the relationship 
+	 */
 	public void displayProfile() {
-		// TODO Auto-generated method stub
+	
 		System.out.println("\nPerson Profile\n" + "===================================");
 		System.out.println("Name: " + this.getName());
 		System.out.println("Age: " + this.getAge());
@@ -36,8 +49,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
+	/**
+	 * This method display the relationship list of the person, include Friend and Parent
+	 */
 	private void displayRelationship() {
-		// TODO Auto-generated method stub
+		
 		System.out.print("Friends: ");
 		for (int i = 0; i < super.getRelationship().size(); i++) {
 			if (super.getRelationship().get(i).getRelationType().equals("Friend"))
@@ -53,9 +69,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		System.out.println("");
 	}
 
-	@Override
+	/**
+	 * This method adds friend to the person's relationship list, and also add the person to the friend's relationship list
+	 * @param selectedPerson this is the person who is going to be added into the friend list
+	 */
 	public boolean addFriend(Person selectedPerson) {
-		// TODO Auto-generated method stub
 
 		RelationshipStore friendRelation1 = new RelationshipStore();// for own relationship
 		RelationshipStore friendRelation2 = new RelationshipStore();// for friend' relationship
@@ -105,7 +123,10 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
-	@Override
+	/**
+	 * This method remove the friend from the person's relationship list
+	 * @param selectedPerson this is the person who is going to be removed from the friend list
+	 */
 	public boolean removeFriend(Person seletedPerson) {
 		
 		this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
@@ -114,6 +135,10 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
+	/**
+	 * This method check if the selected person is this person's friend
+	 * @param  seletedPerson this is the person who is be tested if it is in the friend list 
+	 */
 	public boolean isFriend(Person seletedPerson) {
 		for (int i = 0; i < this.getRelationship().size(); i++) {
 			if (this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
@@ -125,16 +150,25 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 	}
 
 
-	@Override
+	/**
+	 * This method adds parents to the object created in the main method, for hard data. 
+	 * @param seletedPerson this is the parent who is going to be added
+	 */
 	public void addParent(Person seletedPerson) {
-		// TODO Auto-generated method stub
+	
 		RelationshipStore parentRelation = new RelationshipStore();
 		parentRelation.setRelationType("Parent");
 		parentRelation.setRelevantPerson(seletedPerson);
 		this.addRelationship(parentRelation);
 	}
 
-	@Override
+	/**
+	 * This method adds parents by the run time input, for input data. It add parents to the person
+	 * and then set those two people to couple relationship
+	 * and then add this baby to those two people
+	 * @param parent1  this is input parent1
+	 * @param parent2  this is input parent2
+	 */
 	public void addParent(Person parent1, Person parent2) {
 		RelationshipStore parentRelation1 = new RelationshipStore();
 		RelationshipStore parentRelation2 = new RelationshipStore();
@@ -163,19 +197,28 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 		childRelation1.setRelationType("Child");
 		childRelation1.setRelevantPerson(this);
-		// System.out.println(childRelation1.getRelevantPerson());
 		parent1.addRelationship(childRelation1);
 
 		childRelation2.setRelationType("Child");
 		childRelation2.setRelevantPerson(this);
 		parent2.addRelationship(childRelation2);
-		//
+		
 	}
 
-	@Override
+	/**
+	 * This method get the friend list of the person
+	 * return tempPerson is a friend list
+	 */
 	public ArrayList<Person> getFriendList() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Person> tempPerson = new ArrayList();
+		for(int i=0;i<this.getRelationship().size();i++)
+		{
+			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
+				tempPerson.add(this.getRelationship().get(i).getRelevantPerson());
+		}
+		return tempPerson;
 	}
-
+	
 }
+
+
