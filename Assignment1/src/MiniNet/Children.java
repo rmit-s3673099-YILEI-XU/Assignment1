@@ -107,12 +107,10 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	@Override
 	public boolean removeFriend(Person seletedPerson) {
-
-		if (this.getRelationByPerson(seletedPerson).getRelationType().equals("Friend")) {
-			this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
-			return true;
-		}
-		return false;
+		
+		this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
+		seletedPerson.getRelationship().remove(seletedPerson.getRelationByPerson(this));
+		return true;
 
 	}
 
@@ -126,16 +124,6 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		return false;
 	}
 
-//	public boolean isInRelationship(Person seletedPerson) {
-//		// TODO Auto-generated method stub
-//		for (int i = 0; i < this.getRelationship().size(); i++) {
-//			if (this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
-//
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 
 	@Override
 	public void addParent(Person seletedPerson) {
@@ -182,6 +170,12 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		childRelation2.setRelevantPerson(this);
 		parent2.addRelationship(childRelation2);
 		//
+	}
+
+	@Override
+	public ArrayList<Person> getFriendList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -110,14 +110,12 @@ public class DriverClass {
 					((Adult) pr).addFriend(tempPerson);
 					System.out.println("Add Friend successful!");
 				}
-			
-				
 
 			}
 
 		} else if (pr instanceof Children) {
 
-			if (addParentsProcess1(pr)) {
+			if (addParentsProcess(pr)) {
 
 				System.out.println("Add person successful!");
 				/* addFriends */
@@ -142,7 +140,7 @@ public class DriverClass {
 
 		else/* it is Baby */ {
 
-			if (addParentsProcess1(pr)) {
+			if (addParentsProcess(pr)) {
 
 				System.out.println("Add person successful!");
 
@@ -255,7 +253,7 @@ public class DriverClass {
 		return tempPerson;
 	}
 	
-	private boolean addParentsProcess1(Person pr) {
+	private boolean addParentsProcess(Person pr) {
 		Person parent1 = new Adult();
 		Person parent2 = new Adult();
 		System.out.println("Parents list\n===================================");
@@ -307,85 +305,6 @@ public class DriverClass {
 		} else
 			return false;
 	}
-	
-
-	
-	public void addParentsProcess(Person pr) {
-		Scanner sr = new Scanner(System.in);
-		String[] parentsName = new String[2];
-		Person[] parents = new Person[2];
-		//boolean[] isSetParents = {false, false};
-		
-		System.out.println("Please input parent 1 name: ");
-		parentsName[0]= sr.nextLine();
-		parents[0]=getLegalParents(parentsName[0], pr);
-		//System.out.println(parents[0]+"\n"+getLegalParents(parentsName[0], pr));
-		parentsName[0]=parents[0].getName();
-		
-		System.out.println("Please input parent 2 name: ");
-		parentsName[1]= sr.nextLine();
-		
-		parents[1]=getLegalParents(parentsName[1], pr);
-		parentsName[1]=parents[1].getName();
-		//Avoid same parents 
-		while(parentsName[1].equals(parentsName[0]))
-		{
-			System.out.println("Same name with parent1. Please input again. ");
-			parentsName[1]= sr.nextLine();
-			parents[1]=getLegalParents(parentsName[1], pr);
-			parentsName[1]=parents[1].getName();
-		}
-		
-	
-		((Children)pr).addParent(parents[0]);
-		((Children)pr).addParent(parents[1]);
-		
-		for(int i =0;i<parents[0].getRelationship().size();i++)
-		{
-			if(parents[0].getRelationship().get(i).getRelevantPerson().equals(parents[1])) {
-				parents[0].getRelationship().get(i).setRelationType("Couple");
-			}
-		}
-		for(int i =0;i<parents[1].getRelationship().size();i++)
-		{
-			if(parents[1].getRelationship().get(i).getRelevantPerson().equals(parents[0])) {
-				parents[1].getRelationship().get(i).setRelationType("Couple");
-			}
-		}
-		System.out.println("Add Parents successful!\n");
-		
-	}
-	
-	public Person getLegalParents(String parentName, Person pr) {
-		Scanner sr = new Scanner(System.in);
-		Person parent = new Adult();
-		boolean isSetParent = false;
-
-		while (!isSetParent) {
-			if (isInList(parentName)) {
-				if (getPerson(parentName) instanceof Adult) {
-
-					parent = getPerson(parentName);
-
-					((Adult) getPerson(parentName)).addChildren(pr);
-					isSetParent = true;
-				}
-				else
-				{
-					System.out.println(parentName + " is not adult. Please check the name and input again.");
-					parentName = sr.nextLine();
-				}
-
-			} else {
-				System.out.println(parentName + " is not in system list. Please check the name and input again.");
-				parentName = sr.nextLine();
-				//System.out.println("xxxxxxxxxxx");
-			}
-		}
-		return parent;
-	}
-	
-
 	
 	public void displayIsFriends()
 	{
@@ -489,7 +408,16 @@ public class DriverClass {
 		while (!goBackMainMenu) {
 			do {
 				displaySelectOption();
-				selectOptionNum = sr.nextInt();
+				 try {
+
+					 selectOptionNum = sr.nextInt();
+		                sr.nextLine();
+
+		            } catch (Exception e) {
+		                System.out.println("Please input a number from menu number.");
+		                selectOptionNum = 0;
+		                break;
+		            }
 			} while (selectOptionNum < 1 || selectOptionNum > 4);
 
 			switch (selectOptionNum) {
@@ -674,73 +602,63 @@ public class DriverClass {
     public void updateRemoveFriends(Person selectedPerson) {
     	
     		Person tempPerson;
-        String friendName;
-        boolean isRemoved = false;
-        
-        Scanner sr = new Scanner(System.in);
-        
-        while(!isRemoved) {
-        	System.out.println("Please input the friend you want to remove");
-        	friendName = sr.nextLine();
-        
-        if(isInList(friendName)) {
-        		if(selectedPerson instanceof Adult) {
-        			if(((Adult)selectedPerson).isFriend(getPerson(friendName))) {
-        				
-        				((Adult)selectedPerson).removeFriend(getPerson(friendName));
-        				
-        				System.out.println("Remove friend successful");
-        				isRemoved = true;
-        			}else {
-        				System.out.println("They are not friends, can't remove" + friendName + " " + "Please input again");
-        	
-        			}
-        		}else if(selectedPerson instanceof Children) {
-        			if(((Children)selectedPerson).isFriend(getPerson(friendName))) {
-        				
-        				((Children)selectedPerson).removeFriend(getPerson(friendName));
-        				
-        				System.out.println("Remove friend successful");
-        				isRemoved = true;
-        			}else {
-        				System.out.println("They are not friends, can't remove" + friendName + " " + "Please input again");
-        			
-        			}
-        		}else {
-        			System.out.println("Can't remove Baby, cause Baby doesn't have any friends" + "Please input again");
-        		
-        		}
-        		
-        }else {
-        		System.out.println(friendName + "is not in the List, can't remove" + friendName + "Please input again");
-        	
-        }
-        }
-        
- 
+    		if(selectedPerson instanceof Baby)
+    		{
+    			 System.out.println("Update fail! Baby cannot have friends");
+    		}
+    		else if(selectedPerson instanceof Adult)	{
+    		
+    			tempPerson=getRelationPerson(((Adult)selectedPerson).getFriendList());
+        		if(tempPerson!=null) {
+        			((Adult) selectedPerson).removeFriend(tempPerson);
+        			System.out.println("Delete Friend successful!");
+    	    			System.out.println("Update successful!");
+    	    			}  		
+
+    		}else
+    		{
+    			tempPerson=getRelationPerson(((Children)selectedPerson).getFriendList());
+        		if(tempPerson!=null) {
+        			((Children) selectedPerson).removeFriend(tempPerson);
+        			System.out.println("Delete Friend successful!");
+    	    			System.out.println("Update successful!");
+    	    			}  		
+
+    		}
+    
     }
 	
 	public boolean deletePerson(Person selectedPerson) {
 		
 		Scanner sr = new Scanner(System.in);
+		RelationshipStore tempRelation;
+		
 		System.out.println("Are you sure to delete "+selectedPerson.getName() +" Y/N");
 		if(sr.nextLine().equals("Y")) {
 		
 		for(int i = 0 ; i<selectedPerson.getRelationship().size();i++) {
 			
-			if(selectedPerson.getRelationship().get(i).getRelationType().equals("Child"))
+			tempRelation=selectedPerson.getRelationship().get(i);
+			if(tempRelation.getRelationType().equals("Child"))
 			{
-				//deleteRelevantPerson(selectedPerson.getRelationship().get(i).getRelevantPerson());
-				System.out.println("This person has children and cannot be deleted.");
-				return false;
-//				System.out.println("The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
-//				if(sr.nextLine().equals("N"))
-//					break;
+
+				
+				System.out.println("The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
+				if(sr.nextLine().equals("N"))
+
+					return false;
+				else {
+					
+					deleteRelevantPerson(tempRelation.getRelevantPerson());
+					System.out.println("----- "+tempRelation.getRelevantPerson().getName());
+					member.remove(tempRelation.getRelevantPerson());
+				}
+
 			}
 		}
 			deleteRelevantPerson(selectedPerson);
 			member.remove(selectedPerson);
-			//System.out.println("Delete successful!");
+
 			return true;
 		}
 		else
@@ -755,27 +673,19 @@ public class DriverClass {
 		for(int i = 0 ; i<tempPerson.getRelationship().size();i++) {
 		
 			//int index;
-			ArrayList<RelationshipStore> friendsRelation;
+			ArrayList<RelationshipStore> friendsRelation = new ArrayList();
 			
 			System.out.println(tempPerson.getName()+"  "+tempPerson.getRelationship().get(i).getRelationType());
-			
-//			if(tempPerson.getRelationship().get(i).getRelationType().equals("Child"))
-//			{
-//				deleteRelevantPerson(tempPerson.getRelationship().get(i).getRelevantPerson());
-//				System.out.println("CHILDRENNNNN");
-//				
-//				//System.out.print(tempPerson.getRelationship().get(i).getRelationType()+"   "+tempPerson.getRelationship().get(i).getRelevantPerson().getName());
-//			}
-			
-			//System.out.println("CHILDRENNNNN__");
-			
-			friendsRelation = tempPerson.getRelationship().get(i).getRelevantPerson().getRelationship();
-//			System.out.println("____"+friendsRelation.get(i).getRelevantPerson().getName());
+
+			friendsRelation=tempPerson.getRelationship().get(i).getRelevantPerson().getRelationship();
+
 			for(int j= 0 ;j<friendsRelation.size();j++)
 			{
-//				System.out.println(friendsRelation.get(j).getRelevantPerson().getName());
-				if(friendsRelation.get(j).getRelevantPerson().equals(tempPerson))
+				if(friendsRelation.get(j).getRelevantPerson().equals(tempPerson)) {
 					friendsRelation.remove(j);
+					break;
+				}
+				
 				
 			}	
 

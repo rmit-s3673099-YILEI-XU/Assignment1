@@ -59,12 +59,10 @@ public class Adult extends Person implements FriendRelation{
 	@Override
 	public boolean removeFriend(Person seletedPerson) {
 		
-		  if(this.getRelationByPerson(seletedPerson).getRelationType().equals("Friend"))
-		  {
-		  this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
-		  return true;
-		  }
-		  return false;
+		
+		this.getRelationship().remove(this.getRelationByPerson(seletedPerson));
+		seletedPerson.getRelationship().remove(seletedPerson.getRelationByPerson(this));
+		return true;
 		  
 	}
 
@@ -115,6 +113,18 @@ public class Adult extends Person implements FriendRelation{
 			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
 		}
 		System.out.println("");
+	}
+
+	@Override
+	public ArrayList<Person> getFriendList() {
+		// TODO Auto-generated method stub
+		ArrayList<Person> tempPerson = new ArrayList();
+		for(int i=0;i<this.getRelationship().size();i++)
+		{
+			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
+				tempPerson.add(this.getRelationship().get(i).getRelevantPerson());
+		}
+		return tempPerson;
 	}
 	
 
