@@ -139,7 +139,7 @@ public class DriverClass {
 		// Adult parent;
 		Person pr;
 		String prName, prPic, prStatus;
-		int prAge;
+		int prAge=-1;
 
 		// more details @Emma
 		Scanner sr = new Scanner(System.in);
@@ -158,9 +158,9 @@ public class DriverClass {
 				prAge = sr.nextInt();
 				sr.nextLine();
 			} catch (Exception e) {
-				System.out.println("Please in put a number!");
-				prAge = sr.nextInt();
+				//System.out.println("Please in put a number!");
 				sr.nextLine();
+				
 			}
 			if(prAge<0||prAge>200)
 			{
@@ -457,6 +457,7 @@ public class DriverClass {
 
 		            } catch (Exception e) {
 		                System.out.println("Please input a number from menu number.");
+		                sr.nextLine();
 		                selectOptionNum = 0;
 		                break;
 		            }
@@ -491,7 +492,8 @@ public class DriverClass {
 	public void updateProfile(Person selectedPerson) {
 
         Scanner sr = new Scanner(System.in);
-      
+        boolean isBackToMenu=false;
+        while(!isBackToMenu) {
         do {
             System.out.print("select what do you want to update\n" +
                     "===================================\n" +
@@ -501,7 +503,7 @@ public class DriverClass {
                     "4. Status\n" +
                     "5. Add Friends\n" +
                     "6. Remove Friends\n" +
-                    "7. Exit\n" );
+                    "7. Back\n" );
 
             try {
 
@@ -509,18 +511,24 @@ public class DriverClass {
                 sr.nextLine();
 
             } catch (Exception e) {
-                System.out.println("Please input a number from menu number.");
+               
+                sr.nextLine();
                 updateNum = 0;
                 break;
             }
 
             if (updateNum < 1 || updateNum > 7)
                 System.out.println("Please input a number from menu number.\n");
+            if(updateNum == 7)
+            {
+            	isBackToMenu=true;
+            	
+            }
 
-        } while (updateNum < 1 || updateNum > 6);
+        } while (updateNum < 1 || updateNum > 7);
 
         updateSelection(updateNum,selectedPerson);
-
+        }
     }
 
     public void updateSelection(int updateNum, Person selectedPerson) {
@@ -537,19 +545,21 @@ public class DriverClass {
                 break;
 
             case 2:
-                int prAge;
+                int prAge=-1;
                 do{
                     System.out.println("Please input Person Age:");
 
                     try {
                         prAge = sr.nextInt();
+                        sr.nextLine();
                     } catch (Exception e) {
                         System.out.println("Please input a number.");
-                        prAge = sr.nextInt();
+                        sr.nextLine();
+                     
                     }
 
-                }while(!updateAge(prAge, selectedPerson));
-
+                }while(prAge<0||prAge>200);
+                updateAge(prAge, selectedPerson);
                 break;
             case 3:
                 System.out.println("Do you want to change the pic? Y/N");
