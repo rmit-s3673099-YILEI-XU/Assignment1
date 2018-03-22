@@ -33,11 +33,11 @@ public class DriverClass {
 				System.out.print(
 				"MiniNet Menu\n"+
 				"===================================\n"+
-				"1. List everyone\n" + 
-				"2. Select a person\n" + 
+				"1. List everyone.\n" + 
+				"2. Select a person by name.\n" + 
 				"3. Are these two direct friends?\n" + 
-				"4. Add a person\n" + 
-				"5. Exit\n" + 
+				"4. Add a person.\n" + 
+				"5. Exit.\n" + 
 				"Enter an option:\n");
 		
 			try {
@@ -45,7 +45,7 @@ public class DriverClass {
 				selectMenuNum = sr.nextInt();
 				
 			} catch (Exception e) {
-				System.out.println("Please input a number from menu number.");
+				System.out.println("Please input a number from menu number.\n");
 				selectMenuNum = 0;
 				break;
 			}
@@ -66,22 +66,112 @@ public class DriverClass {
 	}
 
 
-	private void addPerson() {
-		Person pr, tempPerson;
+	private void addPerson(Person pr) {
+		
+		Scanner sr = new Scanner(System.in);
+		Person tempPerson;
+		String flag;
 
+		if (pr instanceof Adult) {
+			member.add(pr);
+			System.out.println("Add person successful!\n");
+			/* addFriends */
+			do {
+			System.out.println("Do you want to add friend? Y/N");
+			flag=sr.nextLine().toUpperCase();
+			if (flag.equals("Y")) {
+				System.out.println("Select Person\n===================================");
+				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+				if (tempPerson != null) {
+					((Adult) pr).addFriend(tempPerson);
+					System.out.println("Add Friend successful\n!");
+				}
+			}
+			}while(!(flag.equals("Y")||flag.equals("N")));
+			
+
+		} else if (pr instanceof Children) {
+
+			System.out.println("Please select parents from the list.");
+			if (addParentsProcess(pr)) {
+
+				System.out.println("Add person successful!\n");
+				do {
+				/* addFriends */
+				System.out.println("Do you want to add friends? Y/N");
+				flag=sr.nextLine().toUpperCase();
+				if (flag.equals("Y")) {
+					System.out.println("Select Person\n===================================");
+					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+					if (tempPerson != null) {
+						if(((Children) pr).addFriend(tempPerson))
+						System.out.println("Add Friend successful!\n");
+						else {
+							tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+						}
+					}
+
+				}
+				}while(!(flag.equals("Y")||flag.equals("N")));
+
+			} else {
+				System.out.println("Fail add person!");
+			}
+
+		}
+
+		else/* it is Baby */ {
+			
+			System.out.println("Please select parents from the list.");
+			if (addParentsProcess(pr)) {
+				
+				System.out.println("Add person successful!\n");
+
+			} else {
+				System.out.println("Fail add person!\n");
+			}
+
+		}
+
+	}
+	
+	private Person inputBasicProfile() {
 		// Adult parent;
+		Person pr;
 		String prName, prPic, prStatus;
 		int prAge;
 
 		// more details @Emma
 		Scanner sr = new Scanner(System.in);
 		System.out.println("Please input Person Name:");
+		do {
 		prName = sr.nextLine();
+		if(isInList(prName)||prName.isEmpty())
+		{
+			System.out.println("The person is already in system./The name cannot be empty.\nPlease input Person Name:");
+		}
+		
+		}while(isInList(prName)||prName.isEmpty());		
 		System.out.println("Please input Person Age:");
-		prAge = sr.nextInt();
-		sr.nextLine();
-		System.out.println("Do you want to set a pic? Y/N");
-		prPic = sr.nextLine();
+		do {
+			try {
+				prAge = sr.nextInt();
+				sr.nextLine();
+			} catch (Exception e) {
+				System.out.println("Please in put a number!");
+				prAge = sr.nextInt();
+				sr.nextLine();
+			}
+			if(prAge<0||prAge>200)
+			{
+				System.out.println("Please in put a legal number.");
+			}
+		}while(prAge<0||prAge>200);
+		
+		do {
+			System.out.println("Do you want to set a pic? Y/N");
+			prPic = sr.nextLine();
+		}while(!(prPic.toUpperCase().equals("Y")||prPic.toUpperCase().equals("N")));
 		System.out.println("Please input Person status. If there is no status, please input none.");
 		prStatus = sr.nextLine();
 
@@ -91,96 +181,48 @@ public class DriverClass {
 			pr = new Children();
 		else
 			pr = new Baby();
+
 		pr.setName(prName);
 		pr.setAge(prAge);
 		pr.setPic(prPic);
 		pr.setStatus(prStatus);
-
-		if (pr instanceof Adult) {
-
-			member.add(pr);
-			System.out.println("Add person successful!");
-			/* addFriends */
-			System.out.println("Do you want to add friend? Y/N");
-			// more details @Emma
-			if (sr.nextLine().contentEquals("Y")) {
-				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
-				if (tempPerson != null) {
-				
-					((Adult) pr).addFriend(tempPerson);
-					System.out.println("Add Friend successful!");
-				}
-
-			}
-
-		} else if (pr instanceof Children) {
-
-			if (addParentsProcess(pr)) {
-
-				System.out.println("Add person successful!");
-				/* addFriends */
-				System.out.println("Do you want to add friends? Y/N");
-				if (sr.nextLine().contentEquals("Y")) {
-					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
-					if (tempPerson != null) {
-						if(((Children) pr).addFriend(tempPerson))
-						System.out.println("Add Friend successful!");
-						else {
-							tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
-						}
-					}
-
-				}
-
-			} else {
-				System.out.println("Fail add person!");
-			}
-
-		}
-
-		else/* it is Baby */ {
-
-			if (addParentsProcess(pr)) {
-
-				System.out.println("Add person successful!");
-
-			} else {
-				System.out.println("Fail add person!");
-			}
-
-		}
-
+		
+		return pr;
 	}
-
 	
-	private void listEveryone()
-	{
-		for(int i =0;i<member.size();i++)
-		{
-			if(member.get(i) instanceof Adult)
-				System.out.println(i+1+". "+member.get(i).getName() +" Adult");
-			else if(member.get(i) instanceof Children)
-				System.out.println(i+1+". "+member.get(i).getName() +" Children");
-			else if(member.get(i) instanceof Baby)
-				System.out.println(i+1+". "+member.get(i).getName() +" Baby");
-		}
-		System.out.println(member.size()+1+". Back");
-		System.out.println("Enter an option:");
-		
-		Scanner sr = new Scanner(System.in);
-		try {
-			
-			selectPersonNum = sr.nextInt();
-			
-		} catch (Exception e) {
-			System.out.println("Please input a number from menu number.");
-			selectPersonNum = 0;
-			
-		}
-		if(selectPersonNum !=member.size()+1)
-			member.get(selectPersonNum-1).displayProfile();
-		
-		
+	private void listEveryone() {
+//		do {
+//			
+			System.out.println("Member List\n===================================");
+			for (int i = 0; i < member.size(); i++) {
+				if (member.get(i) instanceof Adult)
+					System.out.println(i + 1 + ". " + member.get(i).getName() + " Adult");
+				else if (member.get(i) instanceof Children)
+					System.out.println(i + 1 + ". " + member.get(i).getName() + " Children");
+				else if (member.get(i) instanceof Baby)
+					System.out.println(i + 1 + ". " + member.get(i).getName() + " Baby");
+			}
+			System.out.println("");
+//			System.out.println(member.size() + 1 + ". Back");
+//			System.out.println("Enter an option:");
+//
+//			Scanner sr = new Scanner(System.in);
+//			try {
+//
+//				selectPersonNum = sr.nextInt();
+//
+//			} catch (Exception e) {
+//				
+//				selectPersonNum = 0;
+//
+//			}
+//			if (selectPersonNum < 1 || selectPersonNum > member.size() + 1) {
+//				System.out.println("Please input a number from menu number.\n");
+//			}
+//		} while (selectPersonNum < 1 || selectPersonNum > member.size() + 1);
+//		if (selectPersonNum != member.size() + 1)
+//			member.get(selectPersonNum - 1).displayProfile();
+
 	}
 	
 	private ArrayList<Person> getPersonListByType(Person tempPerson, String action)
@@ -256,7 +298,7 @@ public class DriverClass {
 	private boolean addParentsProcess(Person pr) {
 		Person parent1 = new Adult();
 		Person parent2 = new Adult();
-		System.out.println("Parents list\n===================================");
+		System.out.println("Select Person\n===================================");
 		parent1 = getRelationPerson(getPersonListByType(pr, "Parent"));
 		if (parent1 != null) {
 			//select couple automatically
@@ -287,9 +329,7 @@ public class DriverClass {
 						getLegalParent = true;
 					}
 				}
-
 			}
-
 		}
 		if (parent1 != null && parent2 != null) {
 
@@ -372,6 +412,7 @@ public class DriverClass {
 	
 	public void selectPersonByName()
 	{
+		listEveryone();
 		String perName;	
 		Person selectedPerson;
 		Scanner sr = new Scanner(System.in);
@@ -379,7 +420,8 @@ public class DriverClass {
 		perName=sr.nextLine();
 		while(!isInList(perName))
 		{
-			System.out.println("The person is not in the list. Please input again. ");
+			System.out.println("The person is not in the list. Please input again. \n");
+			listEveryone();
 			perName=sr.nextLine();
 		}
 		selectedPerson = getPerson(perName);
@@ -436,9 +478,7 @@ public class DriverClass {
 				else
 				{
 					System.out.println("Fail to delete!\n");
-				}
-				
-				
+				}		
 				break;
 			case 4:
 				goBackMainMenu = true;
@@ -658,7 +698,7 @@ public class DriverClass {
 		}
 			deleteRelevantPerson(selectedPerson);
 			member.remove(selectedPerson);
-
+		
 			return true;
 		}
 		else
@@ -685,13 +725,10 @@ public class DriverClass {
 					friendsRelation.remove(j);
 					break;
 				}
-				
-				
-			}	
 
+			}	
 		}
 
-		
 	}
 	
 	
@@ -699,6 +736,9 @@ public class DriverClass {
 	public void runProfile() {
 		
 //		testData();
+		Scanner sr = new Scanner(System.in);
+		String input;
+		
 		while (!isExit) {
 			mainMenu();
 			switch (selectMenuNum) {
@@ -712,7 +752,12 @@ public class DriverClass {
 				displayIsFriends();
 				break;
 			case 4:
-				addPerson();
+				do {
+				System.out.println("Do you want to add a person? Y/N");
+				input=sr.nextLine().toUpperCase();
+				if(input.equals("Y"))
+					addPerson(inputBasicProfile());
+				}while(!(input.equals("Y")||input.equals("N")));
 				break;
 			case 5:
 				isExit = true;
