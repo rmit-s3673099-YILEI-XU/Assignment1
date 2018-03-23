@@ -171,7 +171,8 @@ public class DriverClass {
 
 		String prName;
 		Scanner sr = new Scanner(System.in);
-
+		
+		System.out.println("If you want to go back last menu. Please return/enter nothing");
 		System.out.println("Please input Person Name:");
 		do {
 			prName = sr.nextLine().trim();
@@ -179,7 +180,9 @@ public class DriverClass {
 				return null;
 			if (isInList(prName)) {
 				System.out.println(
-						"The person is already in system.\nPlease input Person Name:");
+						"The person is already in system.");
+				System.out.println("If you want to go back last menu. Please return/enter nothing");
+				System.out.println("Please input Person Name:");
 			}
 
 		} while (isInList(prName));
