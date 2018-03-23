@@ -375,33 +375,41 @@ public class DriverClass {
 	 * This method displays whether two people are friends or not
 	 */
 	private void displayIsFriends() {
-		
+
 		Person tempPerson1, tempPerson2;
 		String[] peopleName = new String[2];
-		
+		listEveryone();
 		Scanner sr = new Scanner(System.in);
-		System.out.println("Please input two names: ");
-		peopleName[0] = sr.next();
-		peopleName[1] = sr.next();
-		sr.nextLine();
-		while (!isInList(peopleName[0]) || !isInList(peopleName[1])) {
-			if (!isInList(peopleName[0])) {
-				System.out.println(peopleName[0] + " is not in the list. Please input again. ");
-				peopleName[0] = sr.nextLine();
-			} else {
-				System.out.println(peopleName[1] + " is not in the list. Please input again. ");
-				peopleName[1] = sr.nextLine();
-			}
+		System.out.println("Please input 1st Person's name: ");
+		peopleName[0] = sr.nextLine();
+		while (!isInList(peopleName[0])) {
+			System.out.println(peopleName[0] + " is not in the list. Please input again. ");
+			peopleName[0] = sr.nextLine();
 		}
+		System.out.println("Please input 2nd person's name: ");
+		peopleName[1] = sr.nextLine();
+		while (!isInList(peopleName[1]) || peopleName[0].equals(peopleName[1])) {
+			System.out.println(peopleName[1] + " is not in the list. Please input again. ");
+			peopleName[1] = sr.nextLine();
+		}
+
 		tempPerson1 = getPerson(peopleName[0]);
 		tempPerson2 = getPerson(peopleName[1]);
 
-		if (tempPerson1 instanceof Adult) {
+		if (tempPerson1.isInRelationship(tempPerson2)) {
+			if (tempPerson1 instanceof Adult) {
+				if (((Adult) tempPerson1).isFriend(tempPerson2))
+					System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
+				else
+					System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
 
-			if (((Adult) tempPerson1).isFriend(tempPerson2))
-				System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends\n");
-			else
-				System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends\n");
+			} else if (tempPerson2 instanceof Children) {
+				if (((Children) tempPerson1).isFriend(tempPerson2))
+					System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
+				else
+					System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
+			} else
+				System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
 		}
 
 	}
