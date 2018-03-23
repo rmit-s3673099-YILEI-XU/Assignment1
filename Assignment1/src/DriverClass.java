@@ -619,12 +619,13 @@ public class DriverClass {
 	private void updateSelection(int updateNum, Person selectedPerson) {
 
 		Scanner sr = new Scanner(System.in);
-
+		String inputName;
 		switch (updateNum) {
 
 		case 1:
-			if(inputName()!=null) {
-			selectedPerson.setName(inputName());
+			inputName=inputName();
+			if(inputName!=null) {
+			selectedPerson.setName(inputName);
 			System.out.println("Update successful!");
 			}else
 				System.out.println("Fail to update! The name cannot be empty!");
