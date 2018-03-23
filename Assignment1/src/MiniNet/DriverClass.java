@@ -9,62 +9,70 @@ import java.util.Scanner;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 /**
+ * This class implements features in MiniNet System. It uses other classes to manage whole social network;
+ * 
  * @author Yilei Xu
  *
  */
 public class DriverClass {
 
+	/**
+	 * member: store person in member list.
+	 * isExist: check if exit the system.
+	 */
 	private ArrayList<Person> member = new ArrayList();
-	private Person selectedPerson;
+//	private Person selectedPerson;
 	private int selectMenuNum = 0;
-	
 	private int updateNum = 0;
 	private boolean isExit = false;	
 	
-	
-	private void mainMenu()
-	{
-		
-		Scanner sr = new Scanner(System.in);	
-		do {
-				System.out.print(
-				"MiniNet Menu\n"+
-				"===================================\n"+
-				"1. List everyone.\n" + 
-				"2. Select a person by name.\n" + 
-				"3. Are these two direct friends?\n" + 
-				"4. Add a person.\n" + 
-				"5. Exit.\n" + 
-				"Enter an option:\n");
-		
-			try {
-				
-				selectMenuNum = sr.nextInt();
-				
-			} catch (Exception e) {
-				System.out.println("Please input a number from menu number.\n");
-				selectMenuNum = 0;
-				break;
-			}
-			
-			if(selectMenuNum<1||selectMenuNum>5)
-				System.out.println("Please input a number from menu number.\n");
-		
-		}
-		while(selectMenuNum<1 || selectMenuNum>5);
-	}
-
-	
 	/**
+	 * for hard coded data
 	 * @return the member
 	 */
 	public ArrayList<Person> getMember() {
 		return member;
 	}
+	
+	/**
+	 * This method displays the main menu and gets the input number from user.
+	 */
+	private void mainMenu() {
 
+		Scanner sr = new Scanner(System.in);
+		do {
+			
+			System.out.print("MiniNet Menu\n" 
+					+ "===================================\n" 
+					+ "1. List everyone.\n"
+					+ "2. Select a person by name.\n" 
+					+ "3. Are these two direct friends?\n" 
+					+ "4. Add a person.\n"
+					+ "5. Exit.\n" + "Enter an option:\n");
+			try {
 
+				selectMenuNum = sr.nextInt();
+
+			} catch (Exception e) {
+				
+				System.out.println("Please input a number from menu number.\n");
+				selectMenuNum = 0;
+				break;
+			}
+
+			if (selectMenuNum < 1 || selectMenuNum > 5) {
+				System.out.println("Please input a number from menu number.\n");
+			}
+
+		} while (selectMenuNum < 1 || selectMenuNum > 5);
+	}
+
+	/**
+	 * This methond 
+	 * @param pr the person will be added in system
+	 */
 	private void addPerson(Person pr) {
-		
+
 		Scanner sr = new Scanner(System.in);
 		Person tempPerson;
 		String flag;
@@ -72,64 +80,48 @@ public class DriverClass {
 		if (pr instanceof Adult) {
 			member.add(pr);
 			System.out.println("Add person successful!\n");
-			/* addFriends */
-			do {
-			System.out.println("Do you want to add friend? Y/N");
-			flag=sr.nextLine().toUpperCase();
-			if (flag.equals("Y")) {
-				
-				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
-				if (tempPerson != null) {
-					((Adult) pr).addFriend(tempPerson);
-					System.out.println("Add Friend successful!\n");
-				}
-			}
-			}while(!(flag.equals("Y")||flag.equals("N")));
-			
-
-		} else if (pr instanceof Children) {
-
-			System.out.println("Please select parents from the list.");
-			if (addParentsProcess(pr)) {
-
-				System.out.println("Add person successful!\n");
-				do {
-				/* addFriends */
-				System.out.println("Do you want to add friends? Y/N");
-				flag=sr.nextLine().toUpperCase();
+			do {/* addFriends */
+				System.out.println("Do you want to add friend? Y/N");
+				flag = sr.nextLine().toUpperCase();
 				if (flag.equals("Y")) {
-			
-					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+					tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));	//get person from available member list.
 					if (tempPerson != null) {
-						if(((Children) pr).addFriend(tempPerson))
+						((Adult) pr).addFriend(tempPerson);
 						System.out.println("Add Friend successful!\n");
-						else {
-							tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+					}
+				}
+			} while (!(flag.equals("Y") || flag.equals("N")));
+		} else if (pr instanceof Children) {
+			System.out.println("Please select parents from the list.");
+			if (addParentsProcess(pr)) {	
+				System.out.println("Add person successful!\n");
+				do {	/* addFriends */
+					System.out.println("Do you want to add friends? Y/N");
+					flag = sr.nextLine().toUpperCase();
+					if (flag.equals("Y")) {
+						tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+						if (tempPerson != null) {
+							if (((Children) pr).addFriend(tempPerson))
+								System.out.println("Add Friend successful!\n");
+							else {
+								tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
+							}
 						}
 					}
-
-				}
-				}while(!(flag.equals("Y")||flag.equals("N")));
+				} while (!(flag.equals("Y") || flag.equals("N")));
 
 			} else {
 				System.out.println("Fail add person!");
 			}
-
 		}
-
 		else/* it is Baby */ {
-			
 			System.out.println("Please select parents from the list.");
 			if (addParentsProcess(pr)) {
-				
 				System.out.println("Add person successful!\n");
-
 			} else {
 				System.out.println("Fail add person!\n");
 			}
-
 		}
-
 	}
 	
 	private Person inputBasicProfile() {
