@@ -179,7 +179,7 @@ public class DriverClass {
 				return null;
 			if (isInList(prName)) {
 				System.out.println(
-						"The person is already in system./The name cannot be empty.\nPlease input Person Name:");
+						"The person is already in system.\nPlease input Person Name:");
 			}
 
 		} while (isInList(prName));
