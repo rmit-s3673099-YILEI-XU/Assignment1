@@ -45,7 +45,7 @@ public abstract class Person {
 		System.out.println("Name:     "+this.getName());
 		System.out.println("Age:      "+this.getAge());
 		System.out.println("Picture:  "+this.getPic());
-		System.out.println("Stautus:  "+this.getStatus());
+		System.out.println("Status:  "+this.getStatus());
 	}
 	
 	

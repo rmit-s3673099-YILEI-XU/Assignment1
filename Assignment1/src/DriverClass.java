@@ -77,7 +77,7 @@ public class DriverClass {
 		Scanner sr = new Scanner(System.in);
 		Person tempPerson;
 		String flag;
-
+		if(pr!=null) {
 		if (pr instanceof Adult) {
 			member.add(pr);
 			System.out.println("Add person successful!\n");
@@ -123,6 +123,9 @@ public class DriverClass {
 				System.out.println("Fail add person!\n");
 			}
 		}
+		}
+		else
+			System.out.println("Fail add person!\n");
 	}
 	
 	/**
@@ -137,6 +140,8 @@ public class DriverClass {
 		Scanner sr = new Scanner(System.in);
 
 		prName=inputName();
+		if(prName==null)
+			return null;
 		prAge=inputAge();
 		prPic=inputPic();
 
@@ -163,19 +168,21 @@ public class DriverClass {
 	 * @return the valid name
 	 */
 	private String inputName() {
-		
+
 		String prName;
 		Scanner sr = new Scanner(System.in);
-		
+
 		System.out.println("Please input Person Name:");
 		do {
-			prName = sr.nextLine();
-			if (isInList(prName) || prName.isEmpty()) {
+			prName = sr.nextLine().trim();
+			if (prName.isEmpty())
+				return null;
+			if (isInList(prName)) {
 				System.out.println(
 						"The person is already in system./The name cannot be empty.\nPlease input Person Name:");
 			}
 
-		} while (isInList(prName) || prName.isEmpty());
+		} while (isInList(prName));
 
 		return prName;
 	}
@@ -379,37 +386,50 @@ public class DriverClass {
 		Person tempPerson1, tempPerson2;
 		String[] peopleName = new String[2];
 		listEveryone();
+		System.out.println("If you want to go back last menu. Please return/enter nothing");
 		Scanner sr = new Scanner(System.in);
 		System.out.println("Please input 1st Person's name: ");
 		peopleName[0] = sr.nextLine();
-		while (!isInList(peopleName[0])) {
-			System.out.println(peopleName[0] + " is not in the list. Please input again. ");
-			peopleName[0] = sr.nextLine();
-		}
-		System.out.println("Please input 2nd person's name: ");
-		peopleName[1] = sr.nextLine();
-		while (!isInList(peopleName[1]) || peopleName[0].equals(peopleName[1])) {
-			System.out.println(peopleName[1] + " is not in the list. Please input again. ");
+		if (!peopleName[0].isEmpty()) {
+			while (!isInList(peopleName[0])) {
+				System.out.println(peopleName[0] + " is not in the list. Please input again. ");
+				System.out.println("If you want to go back last menu. Please return/enter nothing");
+				peopleName[0] = sr.nextLine().trim();
+				if (peopleName[0].isEmpty())
+					break;
+			}
+			System.out.println("If you want to go back last menu. Please return/enter nothing");
+			System.out.println("Please input 2nd person's name: ");
 			peopleName[1] = sr.nextLine();
-		}
+			if (!peopleName[1].isEmpty()) {
+				while (!isInList(peopleName[1]) || peopleName[0].equals(peopleName[1])) {
+					System.out.println(peopleName[1] + " is not in the list. Please input again. ");
+					System.out.println("If you want to go back last menu. Please return/enter nothing");
+					peopleName[1] = sr.nextLine().trim();
+					if (peopleName[1].isEmpty())
+						break;
+				}
+			}
+			if (!peopleName[0].isEmpty() && !peopleName[1].isEmpty()) {
+				tempPerson1 = getPerson(peopleName[0]);
+				tempPerson2 = getPerson(peopleName[1]);
 
-		tempPerson1 = getPerson(peopleName[0]);
-		tempPerson2 = getPerson(peopleName[1]);
+				if (tempPerson1.isInRelationship(tempPerson2)) {
+					if (tempPerson1 instanceof Adult) {
+						if (((Adult) tempPerson1).isFriend(tempPerson2))
+							System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
+						else
+							System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
 
-		if (tempPerson1.isInRelationship(tempPerson2)) {
-			if (tempPerson1 instanceof Adult) {
-				if (((Adult) tempPerson1).isFriend(tempPerson2))
-					System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
-				else
-					System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
-
-			} else if (tempPerson2 instanceof Children) {
-				if (((Children) tempPerson1).isFriend(tempPerson2))
-					System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
-				else
-					System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
-			} else
-				System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
+					} else if (tempPerson2 instanceof Children) {
+						if (((Children) tempPerson1).isFriend(tempPerson2))
+							System.out.println(peopleName[0] + " and " + peopleName[1] + " are Friends.\n");
+						else
+							System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
+					} else
+						System.out.println(peopleName[0] + " and " + peopleName[1] + " are not Friends.\n");
+				}
+			}
 		}
 
 	}
@@ -452,22 +472,32 @@ public class DriverClass {
 	 * This method selects person by name.
 	 */
 	private void selectPersonByName() {
-		
+
 		listEveryone();
 		String perName;
 		Person selectedPerson;
-		
+
 		Scanner sr = new Scanner(System.in);
+		System.out.println("If you want to go back last menu. Please return/enter nothing. ");
 		System.out.println("Please input person name: ");
-		perName = sr.nextLine();
-		while (!isInList(perName)) {
-			System.out.println("The person is not in the list. Please input again. \n");
-			listEveryone();
-			perName = sr.nextLine();
+		perName = sr.nextLine().trim();
+		if (!perName.isEmpty()) {
+			while (!isInList(perName)) {
+
+				System.out.println("The person is not in the list.");
+				System.out.println("If you want to go back last menu. Please return/enter nothing. ");
+				System.out.println("Please input person name: ");
+				perName = sr.nextLine().trim();
+				if (perName.isEmpty())
+					break;
+
+			}
+			if (!perName.isEmpty()) {
+				selectedPerson = getPerson(perName);
+				System.out.println("Select " + selectedPerson.getName() + " is successful!\n");
+				selectOptions(selectedPerson);
+			}
 		}
-		selectedPerson = getPerson(perName);
-		System.out.println("Select " + selectedPerson.getName() + " is successful!\n");
-		selectOptions(selectedPerson);
 
 	}
 	
@@ -593,8 +623,11 @@ public class DriverClass {
 		switch (updateNum) {
 
 		case 1:
+			if(inputName()!=null) {
 			selectedPerson.setName(inputName());
 			System.out.println("Update successful!");
+			}else
+				System.out.println("Fail to update! The name cannot be empty!");
 			break;
 		case 2:
 			updateAge(inputAge(), selectedPerson);
