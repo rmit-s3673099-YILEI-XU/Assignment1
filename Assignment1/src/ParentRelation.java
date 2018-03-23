@@ -1,7 +1,7 @@
 /**
  * 
  */
-package MiniNet;
+
 
 /**
  * This interface is to implement add parent to a person

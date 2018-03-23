@@ -1,7 +1,7 @@
 /**
  * 
  */
-package MiniNet;
+
 
 /**
  * This class is the subclass of Person, it creates the Baby type person

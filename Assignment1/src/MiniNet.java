@@ -1,7 +1,7 @@
 /**
  * 
  */
-package MiniNet;
+
 
 /**
  * This class is the main method class to run the program
@@ -17,10 +17,7 @@ public class MiniNet {
 	public static void main(String[] args) {
 
 		DriverClass pc = new DriverClass();
-		
-		
-		
-		pc.runProfile();
+		pc.runProject();
 	}
 	
 
