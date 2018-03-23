@@ -38,11 +38,7 @@ public class Adult extends Person implements FriendRelation{
 	 */
 	public void displayProfile() {
 		 
-		System.out.println("\nPerson Profile\n"+"===================================");
-		System.out.println("Name: "+this.getName());
-		System.out.println("Age: "+this.getAge());
-		System.out.println("Picture: "+this.getPic());
-		System.out.println("Stautus: "+this.getStatus());
+		super.displayProfile();
 		displayRelationship();
 		System.out.println("");
 	}
@@ -111,14 +107,14 @@ public class Adult extends Person implements FriendRelation{
 	 */
 	private void displayRelationship()
 	{
-		System.out.print("Friends: ");
+		System.out.print("Friends:  ");
 		for(int i =0;i<this.getRelationship().size();i++) {
 			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
 			System.out.print(this.getRelationship().get(i).getRelevantPerson().getName()+" ");
 		}
 		System.out.println("");	
 		
-		System.out.print("Couple: ");
+		System.out.print("Couple:   ");
 		
 		for(int i =0;i<this.getRelationship().size();i++) {
 			if(this.getRelationship().get(i).getRelationType().equals("Couple"))

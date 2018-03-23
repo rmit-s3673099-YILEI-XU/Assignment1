@@ -17,12 +17,9 @@ public class DriverClass {
 	private ArrayList<Person> member = new ArrayList();
 	private Person selectedPerson;
 	private int selectMenuNum = 0;
-	private int selectPersonNum = 0;
+	
 	private int updateNum = 0;
-	private boolean isExit = false;
-	
-	//private int memberNum=-1;
-	
+	private boolean isExit = false;	
 	
 	
 	private void mainMenu()
@@ -84,7 +81,7 @@ public class DriverClass {
 				tempPerson = getRelationPerson(getPersonListByType(pr, "Friend"));
 				if (tempPerson != null) {
 					((Adult) pr).addFriend(tempPerson);
-					System.out.println("Add Friend successful\n!");
+					System.out.println("Add Friend successful!\n");
 				}
 			}
 			}while(!(flag.equals("Y")||flag.equals("N")));
@@ -195,7 +192,7 @@ public class DriverClass {
 			}
 			if(prAge<0||prAge>200)
 			{
-				System.out.println("Please in put a legal number.");
+				System.out.println("Please in put a legal number (0~200).");
 			}
 		}while(prAge<0||prAge>200);
 		
@@ -213,37 +210,18 @@ public class DriverClass {
 		return prPic;
 	}
 	private void listEveryone() {
-//		do {
-//			
+
+			
 			System.out.println("Member List\n===================================");
 			for (int i = 0; i < member.size(); i++) {
 				if (member.get(i) instanceof Adult)
-					System.out.println(i + 1 + ". " + member.get(i).getName() + " Adult");
+					System.out.printf("%d. %-10sAdult\n",i + 1,member.get(i).getName());
 				else if (member.get(i) instanceof Children)
-					System.out.println(i + 1 + ". " + member.get(i).getName() + " Children");
+					System.out.printf("%d. %-10sChild\n",i + 1,member.get(i).getName());
 				else if (member.get(i) instanceof Baby)
-					System.out.println(i + 1 + ". " + member.get(i).getName() + " Baby");
+					System.out.printf("%d. %-10sBaby\n",i + 1,member.get(i).getName());
 			}
 			System.out.println("");
-//			System.out.println(member.size() + 1 + ". Back");
-//			System.out.println("Enter an option:");
-//
-//			Scanner sr = new Scanner(System.in);
-//			try {
-//
-//				selectPersonNum = sr.nextInt();
-//
-//			} catch (Exception e) {
-//				
-//				selectPersonNum = 0;
-//
-//			}
-//			if (selectPersonNum < 1 || selectPersonNum > member.size() + 1) {
-//				System.out.println("Please input a number from menu number.\n");
-//			}
-//		} while (selectPersonNum < 1 || selectPersonNum > member.size() + 1);
-//		if (selectPersonNum != member.size() + 1)
-//			member.get(selectPersonNum - 1).displayProfile();
 
 	}
 	
@@ -302,7 +280,7 @@ public class DriverClass {
 			
 		} catch (Exception e) {
 			System.out.println("Please input a number from menu number.");
-			selectPersonNum = 0;
+			selectedPersonNum = 0;
 			
 		}
 		if(selectedPersonNum==tempPersonList.size()+1)
@@ -592,28 +570,17 @@ public class DriverClass {
         }
     }
 
-//    public boolean updateName(String prName, Person selectedPerson) {
-//        if(isInList(prName)){
-//            System.out.println("Name already exist, update fail!");
-//            return false;
-//        }else {
-//            selectedPerson.setName(prName);
-//            System.out.println("Update successful!");
-//            return true;
-//        }
-//
-//    }
     public boolean updateAge(int prAge, Person selectedPerson) {
 
         if (selectedPerson instanceof Adult && !(prAge>=16)) {
 
-            System.out.println("Update Fail. Please input the age range in the person type");
+            System.out.println("Update Fail. Adult age range: 16~200.");
             return false;
         } else if (selectedPerson instanceof Children && !(prAge < 16 && prAge > 2)) {
-            System.out.println("Update fail. Please input the age range in the person type");
+            System.out.println("Update fail. Child age range: 3~15.");
             return false;
         } else if (selectedPerson instanceof Baby && !(prAge <= 2)) {
-            System.out.println("Update Fail. Please input the age range in the person type");
+            System.out.println("Update Fail. Baby age range: 0~2.");
             return false;
         } else {
             selectedPerson.setAge(prAge);
@@ -627,7 +594,7 @@ public class DriverClass {
 
     		Person tempPerson;
     		boolean isGoBack= false;
-    		
+
   
 		if (selectedPerson instanceof Baby) {
 			System.out.println("Update fail! Baby cannot have friends");
@@ -641,16 +608,26 @@ public class DriverClass {
 						System.out.println("Fail to add friend, they already have relationship!");
 
 					} else {
-
+						
 						if (selectedPerson instanceof Adult) {
 							((Adult) selectedPerson).addFriend(tempPerson);
+							System.out.println("Add Friend successful!");
+							System.out.println("Update successful!");
 							
 						} else {
-							((Children) selectedPerson).addFriend(tempPerson);
+							if(
+							((Children) selectedPerson).addFriend(tempPerson))
+							{
+								System.out.println("Add Friend successful!");
+								System.out.println("Update successful!");
+							}
+							else
+							{
+								System.out.println("Fail to add friend!");
+								System.out.println("Fail to update!");
+							}
 						}
 						isGoBack=true;
-						System.out.println("Add Friend successful!");
-						System.out.println("Update successful!");
 					}
 				}else
 				{
@@ -662,60 +639,85 @@ public class DriverClass {
 
     }
 
-    public void updateRemoveFriends(Person selectedPerson) {
-    	
-    		Person tempPerson;
-    		
-    		
-    		if(selectedPerson instanceof Baby)
-    		{
-    			 System.out.println("Update fail! Baby cannot have friends");
-    		}
-    		else if(selectedPerson instanceof Adult)	{
-    		
-    			tempPerson=getRelationPerson(((Adult)selectedPerson).getFriendList());
-        		if(tempPerson!=null) {
-        			((Adult) selectedPerson).removeFriend(tempPerson);
-        			System.out.println("Delete Friend successful!");
-    	    			System.out.println("Update successful!");
-    	    			}  		
+	public void updateRemoveFriends(Person selectedPerson) {
 
-    		}else
-    		{
-    			tempPerson=getRelationPerson(((Children)selectedPerson).getFriendList());
-        		if(tempPerson!=null) {
-        			((Children) selectedPerson).removeFriend(tempPerson);
-        			System.out.println("Delete Friend successful!");
-    	    			System.out.println("Update successful!");
-    	    			}  		
+		Person tempPerson;
+		String inputYN = "";
+		Scanner sr = new Scanner(System.in);
 
-    		}
-    
-    }
+		if (selectedPerson instanceof Baby) {
+			System.out.println("Update fail! Baby cannot have friends");
+		} else if (selectedPerson instanceof Adult) {
+
+			tempPerson = getRelationPerson(((Adult) selectedPerson).getFriendList());
+			if (tempPerson != null) {
+				do {
+					System.out.println(
+							"Are you sure to delete " +tempPerson.getName() + " from "+selectedPerson.getName()+"'s friend list? Y/N");
+					inputYN = sr.nextLine();
+				} while (!(inputYN.toUpperCase().equals("Y") || inputYN.toUpperCase().equals("N")));
+				if (inputYN.toUpperCase().equals("Y")) {
+					((Adult) selectedPerson).removeFriend(tempPerson);
+					System.out.println("Delete Friend successful!");
+					System.out.println("Update successful!");
+				} else {
+					System.out.println("Fail to Delete friend.");
+				}
+			}
+
+		} else {
+			tempPerson = getRelationPerson(((Children) selectedPerson).getFriendList());
+			if (tempPerson != null) {
+				do {
+					System.out.println(
+							"Are you sure to delete " + tempPerson.getName() + " from "+ selectedPerson.getName()+"'s friend list? Y/N");
+					inputYN = sr.nextLine();
+				} while (!(inputYN.toUpperCase().equals("Y") || inputYN.toUpperCase().equals("N")));
+				if (inputYN.toUpperCase().equals("Y")) {
+					((Children) selectedPerson).removeFriend(tempPerson);
+					System.out.println("Delete Friend successful!");
+					System.out.println("Update successful!");
+				} else {
+					System.out.println("Fail to Delete friend.");
+				}
+			}
+
+		}
+
+	}
 	
 	public boolean deletePerson(Person selectedPerson) {
 		
 		Scanner sr = new Scanner(System.in);
 		RelationshipStore tempRelation;
+		String inputYN;
 		
-		System.out.println("Are you sure to delete "+selectedPerson.getName() +" ？ Y/N");
-		if(sr.nextLine().equals("Y")) {
+		do {
+			System.out.println("Are you sure to delete "+selectedPerson.getName() +" ？ Y/N");
+			inputYN = sr.nextLine();
+		}while(!(inputYN.toUpperCase().equals("Y")||inputYN.toUpperCase().equals("N")));
+		
+		if(inputYN.toUpperCase().equals("Y")) {
 		
 		for(int i = 0 ; i<selectedPerson.getRelationship().size();i++) {
 			
 			tempRelation=selectedPerson.getRelationship().get(i);
 			if(tempRelation.getRelationType().equals("Child"))
 			{
-
+				inputYN="";
+				do {
+					System.out.println("The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
+					inputYN = sr.nextLine();
+				}while(!(inputYN.toUpperCase().equals("Y")||inputYN.toUpperCase().equals("N")));
 				
-				System.out.println("The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
-				if(sr.nextLine().equals("N"))
+			
+				if(inputYN.toUpperCase().equals("N"))
 
 					return false;
 				else {
 					
 					deleteRelevantPerson(tempRelation.getRelevantPerson());
-					System.out.println("----- "+tempRelation.getRelevantPerson().getName());
+					//System.out.println("----- "+tempRelation.getRelevantPerson().getName());
 					member.remove(tempRelation.getRelevantPerson());
 				}
 
@@ -740,7 +742,7 @@ public class DriverClass {
 			//int index;
 			ArrayList<RelationshipStore> friendsRelation = new ArrayList();
 			
-			System.out.println(tempPerson.getName()+"  "+tempPerson.getRelationship().get(i).getRelationType());
+		//	System.out.println(tempPerson.getName()+"  "+tempPerson.getRelationship().get(i).getRelationType());
 
 			friendsRelation=tempPerson.getRelationship().get(i).getRelevantPerson().getRelationship();
 
@@ -756,13 +758,43 @@ public class DriverClass {
 
 	}
 	
-	
+	private void initialData() {
+		Person alice = new Adult("Alice",32,"Y","Working at KFC");
+		Person bob = new Adult("Bob",36,"N","Freelance");
+		Person cathy = new Adult("Cathy",28,"Y","Student at RMIT");
+		Person don = new Adult("Don",30,"Y","Looking for jobs");
+		Person emily = new Children("Emily",12,"N","Student at school");
+		Person frank = new Children("Frank",6,"N","");
+//		Person green = new Adult("Green",28,"Y","Freelance");
+		Person henry = new Adult("Henry",30,"N","Freelance");
+		Person ivy = new Baby("Ivy",1,"N","");
+		Person jammy = new Children("Jammy",8,"N","");
+		
+		((Adult)alice).addFriend(bob);
+		((Adult)alice).addFriend(don);
+		((Adult)cathy).addFriend(don);
+		((Children)emily).addParent(alice,bob);
+		((Children)frank).addParent(alice,bob);
+		((Children)frank).addFriend(jammy);
+		((Children)jammy).addParent(cathy,henry);
+		((Baby)ivy).addParent(cathy, henry);
+		
+		getMember().add(alice);
+		getMember().add(bob);
+		getMember().add(cathy);
+		getMember().add(don);
+		getMember().add(emily);
+		getMember().add(frank);
+		getMember().add(henry);
+		getMember().add(ivy);
+		getMember().add(jammy);
+	}
 	
 	public void runProfile() {
 		
-//		testData();
+		initialData();
 		Scanner sr = new Scanner(System.in);
-		String input;
+		String inputYN;
 		
 		while (!isExit) {
 			mainMenu();
@@ -779,10 +811,10 @@ public class DriverClass {
 			case 4:
 				do {
 				System.out.println("Do you want to add a person? Y/N");
-				input=sr.nextLine().toUpperCase();
-				if(input.equals("Y"))
+				inputYN=sr.nextLine().toUpperCase();
+				if(inputYN.equals("Y"))
 					addPerson(inputBasicProfile());
-				}while(!(input.equals("Y")||input.equals("N")));
+				}while(!(inputYN.equals("Y")||inputYN.equals("N")));
 				break;
 			case 5:
 				isExit = true;
@@ -794,6 +826,8 @@ public class DriverClass {
 
 		System.out.println("Thank you for using MiniNet System!");
 	}
+	
+	
 	
 
 }

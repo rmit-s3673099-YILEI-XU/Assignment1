@@ -38,9 +38,15 @@ public abstract class Person {
 	}
 	
 	/**
-	 *  This method display the person's basic profile and the relationship 
+	 *  This method display the person's basic profile 
 	 */
-	public abstract void displayProfile();
+	public void displayProfile() {
+		System.out.println("\nPerson Profile\n"+"===================================");
+		System.out.println("Name:     "+this.getName());
+		System.out.println("Age:      "+this.getAge());
+		System.out.println("Picture:  "+this.getPic());
+		System.out.println("Stautus:  "+this.getStatus());
+	}
 	
 	
 	/**

@@ -36,11 +36,7 @@ public class Baby extends Person implements ParentRelation{
 	 */
 	public void displayProfile() {
 		
-		System.out.println("\nPerson Profile\n"+"===================================");
-		System.out.println("Name: "+this.getName());
-		System.out.println("Age: "+this.getAge());
-		System.out.println("Picture: "+this.getPic());
-		System.out.println("Stautus: "+this.getStatus());
+		super.displayProfile();
 		displayRelationship();
 		System.out.println("");
 		
