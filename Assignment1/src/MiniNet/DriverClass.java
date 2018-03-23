@@ -548,6 +548,7 @@ public class DriverClass {
                 updateAge(inputAge(), selectedPerson);
                 break;
             case 3:
+            		System.out.println("Please choose the pic condition again");
             		selectedPerson.setPic(inputPic());
                 System.out.println("Update successful!");
                 break;
