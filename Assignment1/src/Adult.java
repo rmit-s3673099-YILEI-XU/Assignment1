@@ -36,6 +36,7 @@ public class Adult extends Person implements FriendRelation{
 	/**
 	 *  This method display the person's basic profile and the relationship 
 	 */
+	@Override
 	public void displayProfile() {
 		 
 		super.displayProfile();

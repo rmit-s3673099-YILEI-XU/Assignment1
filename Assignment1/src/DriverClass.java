@@ -21,7 +21,6 @@ public class DriverClass {
 	 * isExist: check if exit the system.
 	 */
 	private ArrayList<Person> member = new ArrayList();
-//	private Person selectedPerson;
 	private int selectMenuNum = 0;
 	private int updateNum = 0;
 	private boolean isExit = false;	
@@ -30,7 +29,7 @@ public class DriverClass {
 	 * for hard coded data
 	 * @return the member
 	 */
-	public ArrayList<Person> getMember() {
+	private ArrayList<Person> getMember() {
 		return member;
 	}
 	
@@ -252,7 +251,7 @@ public class DriverClass {
 		if (tempPerson instanceof Adult) {
 			for (int i = 0; i < member.size(); i++) {
 				if (member.get(i) instanceof Adult) {
-					if (!member.get(i).equals(tempPerson))
+					if (!member.get(i).equals(tempPerson) && !tempPerson.isInRelationship(member.get(i)))
 						tempPersonList.add(member.get(i));	//select adults who can make friends with person who is selected.
 				}
 			}
@@ -263,7 +262,7 @@ public class DriverClass {
 						tempPersonList.add(member.get(i));	//select adults who can be parents with person who is selected.
 					}
 				} else if (action.equals("Friend")) {
-					if (member.get(i) instanceof Children) {
+					if (member.get(i) instanceof Children && !tempPerson.isInRelationship(member.get(i))) {
 						if (!member.get(i).equals(tempPerson))
 							tempPersonList.add(member.get(i));	//select children who can make friends with person who is selected.
 					}
@@ -373,7 +372,7 @@ public class DriverClass {
 	/**
 	 * This method displays whether two people are friends or not
 	 */
-	public void displayIsFriends() {
+	private void displayIsFriends() {
 		
 		Person tempPerson1, tempPerson2;
 		String[] peopleName = new String[2];
@@ -410,7 +409,7 @@ public class DriverClass {
 	 * @param inputName the name of person from input
 	 * @return
 	 */
-	public boolean isInList(String inputName) {
+	private boolean isInList(String inputName) {
 		
 		for (int i = 0; i < member.size(); i++) {
 			if (inputName.equals(member.get(i).getName())) {
@@ -426,7 +425,7 @@ public class DriverClass {
 	 * @param inputName the name of person from input
 	 * @return person object
 	 */
-	public Person getPerson(String inputName) {
+	private Person getPerson(String inputName) {
 		
 		int index = -1;
 		
@@ -442,7 +441,7 @@ public class DriverClass {
 	/**
 	 * This method selects person by name.
 	 */
-	public void selectPersonByName() {
+	private void selectPersonByName() {
 		
 		listEveryone();
 		String perName;
@@ -465,7 +464,7 @@ public class DriverClass {
 	/**
 	 * This method displays select option menu after a person is selected
 	 */
-	public void displaySelectOption()
+	private void displaySelectOption()
 	{
 		System.out.println("Selection Option\n"+"===================================");
 		System.out.println("1. Display Profile.");
@@ -479,7 +478,7 @@ public class DriverClass {
 	 * This method implements all features after a person is selected
 	 * @param selectedPerson
 	 */
-	public void selectOptions(Person selectedPerson) {
+	private void selectOptions(Person selectedPerson) {
 		
 		int selectOptionNum = 0;
 		boolean goBackMainMenu = false;
@@ -528,7 +527,7 @@ public class DriverClass {
 	 * This method displays the update menu, gets selected option number and use 'updateSelection' method to implement the update feature.
 	 * @param selectedPerson
 	 */
-	public void updateProfile(Person selectedPerson) {
+	private void updateProfile(Person selectedPerson) {
 
 		Scanner sr = new Scanner(System.in);
 		boolean isBackToMenu = false;
@@ -574,7 +573,7 @@ public class DriverClass {
 	 * @param updateNum number of selected option of menu
 	 * @param selectedPerson 
 	 */
-	public void updateSelection(int updateNum, Person selectedPerson) {
+	private void updateSelection(int updateNum, Person selectedPerson) {
 
 		Scanner sr = new Scanner(System.in);
 
@@ -616,7 +615,7 @@ public class DriverClass {
 	 * @param selectedPerson
 	 * @return
 	 */
-	public boolean updateAge(int prAge, Person selectedPerson) {
+	private boolean updateAge(int prAge, Person selectedPerson) {
 
 		if (selectedPerson instanceof Adult && !(prAge >= 16)) {
 			System.out.println("Update Fail. Adult age range: 16~200.");
@@ -638,7 +637,7 @@ public class DriverClass {
 	 * This method adds friend in Update features after select a person.
 	 * @param selectedPerson
 	 */
-	public void updateAddFriends(Person selectedPerson) {
+	private void updateAddFriends(Person selectedPerson) {
 
 		Person tempPerson;
 		boolean isGoBack = false;
@@ -652,11 +651,6 @@ public class DriverClass {
 				tempPerson = getRelationPerson(getPersonListByType(selectedPerson, "Friend"));
 
 				if (tempPerson != null) {
-					if (selectedPerson.isInRelationship(tempPerson)) {
-						System.out.println("Fail to add friend, they already have relationship!");
-
-					} else {
-
 						if (selectedPerson instanceof Adult) {
 							((Adult) selectedPerson).addFriend(tempPerson);
 							System.out.println("Add Friend successful!");
@@ -672,7 +666,6 @@ public class DriverClass {
 							}
 						}
 						isGoBack = true;
-					}
 				} else {
 					isGoBack = true;
 				}
@@ -684,7 +677,7 @@ public class DriverClass {
 	 * This method removes friends in update feature after select a person.
 	 * @param selectedPerson
 	 */
-	public void updateRemoveFriends(Person selectedPerson) {
+	private void updateRemoveFriends(Person selectedPerson) {
 
 		Person tempPerson;
 		String inputYN = "";
@@ -726,9 +719,7 @@ public class DriverClass {
 					System.out.println("Fail to Delete friend.");
 				}
 			}
-
 		}
-
 	}
 	
 	/**
@@ -738,7 +729,7 @@ public class DriverClass {
 	 * @param selectedPerson
 	 * @return
 	 */
-	public boolean deletePerson(Person selectedPerson) {
+	private boolean deletePerson(Person selectedPerson) {
 
 		Scanner sr = new Scanner(System.in);
 		RelationshipStore tempRelation;
@@ -758,7 +749,8 @@ public class DriverClass {
 					inputYN = "";
 					do {
 						System.out.println(
-								"The person has children. If delete person, the children also will be deleted.\n Do you still want to delete this person? Y/N");
+								"The person has children. If delete person, the children also will be deleted.\n"
+								+ "Do you still want to delete this person? Y/N");
 						inputYN = sr.nextLine();
 					} while (!(inputYN.toUpperCase().equals("Y") || inputYN.toUpperCase().equals("N")));
 
@@ -787,7 +779,7 @@ public class DriverClass {
 	 * This method deletes people who have any relationship with the selected person, before deletes the selected person.
 	 * @param tempPerson selected person
 	 */
-	public void deleteRelevantPerson(Person tempPerson) {
+	private void deleteRelevantPerson(Person tempPerson) {
 		for (int i = 0; i < tempPerson.getRelationship().size(); i++) {
 
 			ArrayList<RelationshipStore> friendsRelation = new ArrayList();

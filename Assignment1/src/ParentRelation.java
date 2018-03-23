@@ -5,13 +5,13 @@
 
 /**
  * This interface is to implement add parent to a person
- * @author Yilei Xu
+ * @author CIFANG ZHANG
  *
  */
 public interface ParentRelation {
 	
 	/**
-	 * This method adds parents to the object created in the main method, for hard data
+	 * This method adds parents to the object for initialization data, for hard data
 	 * @param seletedPerson
 	 */
 	public void addParent(Person seletedPerson);

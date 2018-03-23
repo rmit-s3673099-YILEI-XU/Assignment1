@@ -11,20 +11,32 @@ import java.util.ArrayList;
  */
 public class Children extends Person implements FriendRelation, ParentRelation {
 
+	/**
+	 * This is the constructor is for creating the Children object from the user
+	 */
 	public Children() {
 
 		super();
-
 	}
 
+	/**
+	 * This constructor is for creating the Children object in the main method, to store some people in the system
+	 * @param name the name of the person
+	 * @param age the age of the person
+	 * @param pic the picture of the person
+	 * @param status the status of the person
+	 */
 	public Children(String name, int age, String pic, String status) {
 
 		super(name, age, pic, status);
-
 	}
 
+	/**
+	 * This method display basic information and the relationship list of the person, include Friends and Parents
+	 */
 	@Override
 	public void displayProfile() {
+		
 		// TODO Auto-generated method stub
 		super.displayProfile();
 		displayRelationship();
@@ -32,6 +44,9 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
+	/**
+	 * This method display the relationship list of the person, include Friends and Parents
+	 */
 	private void displayRelationship() {
 		// TODO Auto-generated method stub
 		System.out.print("Friends:  ");
@@ -49,6 +64,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		System.out.println("");
 	}
 
+	/** 
+	 * Children from the same family cannot be friends 
+	 * Children whose age gap is more than 3 cannot be friends
+	 * @see FriendRelation#addFriend(Person)
+	 */
 	@Override
 	public boolean addFriend(Person selectedPerson) {
 		// TODO Auto-generated method stub
@@ -67,7 +87,6 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 			if (this.getRelationship().get(i).getRelationType().equals("Parent")) {
 				parent = this.getRelationship().get(i).getRelevantPerson();
 			}
-//			System.out.println(parent.getName());
 		}
 		for (int i = 0; i < selectedPerson.getRelationship().size(); i++) {
 			if (selectedPerson.getRelationship().get(i).getRelationType().equals("Parent")
@@ -77,10 +96,8 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 			}
 		}
-
 		if (isInSameFam) {
-			System.out.println(
-					"They are in same family, they cannot be friends.");
+			System.out.println("They are in same family, they cannot be friends.");
 			return false;
 
 		} else {
@@ -101,6 +118,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
+
+	/** 
+	 * This method remove person's friends
+	 * @see FriendRelation#removeFriend(Person)
+	 */
 	@Override
 	public boolean removeFriend(Person seletedPerson) {
 		
@@ -110,6 +132,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 	}
 
+
+	/** 
+	 * This method check if the selected person is this person's friend
+	 * @see FriendRelation#isFriend(Person)
+	 */
 	public boolean isFriend(Person seletedPerson) {
 		for (int i = 0; i < this.getRelationship().size(); i++) {
 			if (this.getRelationship().get(i).getRelevantPerson().equals(seletedPerson)) {
@@ -121,6 +148,11 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 	}
 
 
+
+	/** 
+	 * This method adds parent of child
+	 * @see ParentRelation#addParent(Person)
+	 */
 	@Override
 	public void addParent(Person seletedPerson) {
 		// TODO Auto-generated method stub
@@ -130,6 +162,10 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		this.addRelationship(parentRelation);
 	}
 
+	/** 
+	 * This method adds parents by the run time input, for input data
+	 * @see ParentRelation#addParent(Person, Person)
+	 */
 	@Override
 	public void addParent(Person parent1, Person parent2) {
 		RelationshipStore parentRelation1 = new RelationshipStore();
@@ -159,19 +195,28 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 
 		childRelation1.setRelationType("Child");
 		childRelation1.setRelevantPerson(this);
-		// System.out.println(childRelation1.getRelevantPerson());
 		parent1.addRelationship(childRelation1);
 
 		childRelation2.setRelationType("Child");
 		childRelation2.setRelevantPerson(this);
 		parent2.addRelationship(childRelation2);
-		//
 	}
 
+	/** 
+	 * This method get the friend list of the person
+	 * @see FriendRelation#getFriendList()
+	 */
 	@Override
 	public ArrayList<Person> getFriendList() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Person> tempPerson = new ArrayList();
+		for(int i=0;i<this.getRelationship().size();i++)
+		{
+			if(this.getRelationship().get(i).getRelationType().equals("Friend"))
+				tempPerson.add(this.getRelationship().get(i).getRelevantPerson());
+		}
+		return tempPerson;
 	}
 
 }
