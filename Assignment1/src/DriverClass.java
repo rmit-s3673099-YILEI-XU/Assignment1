@@ -296,10 +296,12 @@ public class DriverClass {
 				selectedPersonNum = sr.nextInt();
 
 			} catch (Exception e) {
-				System.out.println("Please input a number from menu number.");
+//				System.out.println("Please input a number from menu number.");
 				selectedPersonNum = 0;
 
 			}
+			if(selectedPersonNum < 1 || selectedPersonNum > tempPersonList.size() + 1)
+				System.out.println("Please input a number from menu number.");
 			if (selectedPersonNum == tempPersonList.size() + 1)			//for go back to last menu
 				break;
 		} while (selectedPersonNum < 1 || selectedPersonNum > tempPersonList.size() + 1);
@@ -498,6 +500,9 @@ public class DriverClass {
 					selectOptionNum = 0;
 					break;
 				}
+				if(selectOptionNum < 1 || selectOptionNum > 4)
+				System.out.println("Please input a number from menu number.");
+				
 			} while (selectOptionNum < 1 || selectOptionNum > 4);
 
 			switch (selectOptionNum) {
@@ -734,6 +739,7 @@ public class DriverClass {
 		Scanner sr = new Scanner(System.in);
 		RelationshipStore tempRelation;
 		String inputYN;
+		ArrayList<Person> childrenList = new ArrayList();
 
 		do {
 			System.out.println("Are you sure to delete " + selectedPerson.getName() + " ？ Y/N");
@@ -742,27 +748,30 @@ public class DriverClass {
 
 		if (inputYN.toUpperCase().equals("Y")) {
 
+			inputYN = "";
 			for (int i = 0; i < selectedPerson.getRelationship().size(); i++) {
-
 				tempRelation = selectedPerson.getRelationship().get(i);
 				if (tempRelation.getRelationType().equals("Child")) {
-					inputYN = "";
-					do {
-						System.out.println(
-								"The person has children. If delete person, the children also will be deleted.\n"
-								+ "Do you still want to delete this person? Y/N");
-						inputYN = sr.nextLine();
-					} while (!(inputYN.toUpperCase().equals("Y") || inputYN.toUpperCase().equals("N")));
-
-					if (inputYN.toUpperCase().equals("N"))
+					if (inputYN.isEmpty()) {
+						do {
+							System.out.println(
+									"The person has children. If delete person, the children also will be deleted.\n"
+											+ "Do you still want to delete this person? Y/N");
+							inputYN = sr.next();
+						} while (!(inputYN.toUpperCase().equals("Y") || inputYN.toUpperCase().equals("N")));
+					}
+					if (inputYN.toUpperCase().equals("N")) {
 
 						return false;
-					else {
-
-						deleteRelevantPerson(tempRelation.getRelevantPerson());
-						member.remove(tempRelation.getRelevantPerson());
+					} else {
+						childrenList.add(tempRelation.getRelevantPerson());
 					}
-
+				}
+			}
+			if (!childrenList.isEmpty()) {
+				for (int i = 0; i < childrenList.size(); i++) {
+					deleteRelevantPerson(childrenList.get(i));
+					member.remove(childrenList.get(i));
 				}
 			}
 			deleteRelevantPerson(selectedPerson);

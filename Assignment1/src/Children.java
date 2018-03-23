@@ -51,8 +51,10 @@ public class Children extends Person implements FriendRelation, ParentRelation {
 		// TODO Auto-generated method stub
 		System.out.print("Friends:  ");
 		for (int i = 0; i < super.getRelationship().size(); i++) {
-			if (super.getRelationship().get(i).getRelationType().equals("Friend"))
+			if (super.getRelationship().get(i).getRelationType().equals("Friend")) {
+
 				System.out.print(super.getRelationship().get(i).getRelevantPerson().getName() + " ");
+			}			
 		}
 		System.out.println("");
 
